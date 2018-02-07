@@ -1,0 +1,21 @@
+{
+  "name": "mqtt-ez",
+  "version": "0.0.1",
+  "description": "mqqt-ez",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bulma": "^0.6.2",
+    "mqtt": "^2.15.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.2.0",
+    "gulp-debug": "^3.2.0",
+    "webpack": "^3.10.0"
+  }
+}

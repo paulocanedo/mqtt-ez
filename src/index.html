@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MQTT-EZ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="dropdown navigation">
+    <a class="navbar-item">
+      MQTT-EZ
+    </a>
+
+    <div class="navbar-item has-dropdown is-hoverable">
+      <a class="navbar-link">
+        Docs
+      </a>
+
+      <div class="navbar-dropdown">
+        <a class="navbar-item">
+          Overview
+        </a>
+        <a class="navbar-item is-active">
+          Elements
+        </a>
+        <a class="navbar-item">
+          Components
+        </a>
+        <hr class="navbar-divider">
+        <div class="navbar-item">
+          Version 0.6.2
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- <section class="section hero is-primary is-bold">
+    <div class="container">
+      <h1 class="title">
+        MQTT-EZ
+      </h1>
+      <p class="subtitle">
+        An easy and complete MQTT tool!
+      </p>
+    </div>
+  </section> -->
+
+  <section class="section">
+    <div class="container">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Connection &nbsp;
+            <span class="tag is-rounded">
+              Not Connected
+            </span>
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+
+        <div class="card-content">
+          <div class="tile is-ancestor is-vertical">
+
+            <div class="tile">
+              <div class="tile is-parent is-paddingless">
+                <div class="tile is-child box is-shadowless is-6">
+                  <label class="label">Host</label>
+                  <input class="input" type="text" placeholder="Host" />
+                </div>
+                <div class="tile is-child box is-shadowless is-2">
+                  <label class="label">Port</label>
+                  <input class="input" type="text" placeholder="1883" />
+                </div>
+                <div class="tile is-child box is-shadowless">
+                  <label class="label">Client ID</label>
+                  <input class="input" type="text" placeholder="Client ID" />
+                </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="tile is-parent is-paddingless">
+                <div class="tile is-child box is-shadowless is-3">
+                  <label class="label">Username</label>
+                  <input class="input" type="text" placeholder="Username" />
+                </div>
+                <div class="tile is-child box is-shadowless is-3">
+                  <label class="label">Password</label>
+                  <input class="input" type="password" placeholder="Password" />
+                </div>
+                <div class="tile is-child box is-shadowless">
+                  <label class="label">Keep Alive</label>
+                  <input class="input" type="text" placeholder="60" />
+                </div>
+                <div class="tile is-child box is-shadowless">
+                  <label class="label">
+                    SSL
+                  </label>
+                  <input type="checkbox" />
+                </div>
+                <div class="tile is-child box is-shadowless">
+                  <label class="label">
+                    Clean Session
+                  </label>
+                  <input type="checkbox" />
+                </div>
+              </div>
+            </div>
+
+            <div class="tile">
+              <div class="tile is-parent is-paddingless">
+                <div class="tile is-child box is-shadowless">
+                  <button class="button is-link">
+                    Connect
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- form connection -->
+
+
+
+      <!--
+      <input class="input" type="text" placeholder="Host">
+      <input class="input" type="text" placeholder="Username">
+      <input class="input" type="text" placeholder="Port">
+      <input class="input" type="password" placeholder="Password">
+      <input class="input" type="text" placeholder="Client ID">
+      <input class="input" type="text" placeholder="Kepp Alive">
+      -->
+
+      <!-- host, port, clientId, username, password, keepAlive, ssl, cleanSession,
+      lastWillTopic, lastWillQoS, lastWillRetain, lastWillMessage -->
+      <!-- end form connection -->
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          <strong>MQTT-EZ</strong> by <a href="http://paulocanedo.com">Paulo Canedo</a>. The source code is licensed
+          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+        </p>
+      </div>
+    </div>
+  </footer>
+  </body>
+</html>
