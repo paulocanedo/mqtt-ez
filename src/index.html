@@ -8,34 +8,6 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
   </head>
   <body>
-    <nav class="navbar" role="navigation" aria-label="dropdown navigation">
-    <a class="navbar-item">
-      MQTT-EZ
-    </a>
-
-    <div class="navbar-item has-dropdown is-hoverable">
-      <a class="navbar-link">
-        Docs
-      </a>
-
-      <div class="navbar-dropdown">
-        <a class="navbar-item">
-          Overview
-        </a>
-        <a class="navbar-item is-active">
-          Elements
-        </a>
-        <a class="navbar-item">
-          Components
-        </a>
-        <hr class="navbar-divider">
-        <div class="navbar-item">
-          Version 0.6.2
-        </div>
-      </div>
-    </div>
-  </nav>
-
   <!-- <section class="section hero is-primary is-bold">
     <div class="container">
       <h1 class="title">
@@ -90,11 +62,11 @@
                   <label class="label">Username</label>
                   <input class="input" type="text" placeholder="Username" />
                 </div>
-                <div class="tile is-child box is-shadowless is-3">
+                <div class="tile is-child box is-shadowless is-2">
                   <label class="label">Password</label>
                   <input class="input" type="password" placeholder="Password" />
                 </div>
-                <div class="tile is-child box is-shadowless">
+                <div class="tile is-child box is-shadowless is-2">
                   <label class="label">Keep Alive</label>
                   <input class="input" type="text" placeholder="60" />
                 </div>
@@ -110,12 +82,10 @@
                   </label>
                   <input type="checkbox" />
                 </div>
-              </div>
-            </div>
-
-            <div class="tile">
-              <div class="tile is-parent is-paddingless">
-                <div class="tile is-child box is-shadowless">
+                <div class="tile is-child box is-shadowless is-2">
+                  <label class="label">
+                    &nbsp;
+                  </label>
                   <button class="button is-link">
                     Connect
                   </button>
@@ -128,20 +98,124 @@
       </div>
       <!-- form connection -->
 
+      <p>&nbsp;</p>
 
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Subscriptions &nbsp;
+            <span class="tag is-rounded">
+              0
+            </span>
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
 
-      <!--
-      <input class="input" type="text" placeholder="Host">
-      <input class="input" type="text" placeholder="Username">
-      <input class="input" type="text" placeholder="Port">
-      <input class="input" type="password" placeholder="Password">
-      <input class="input" type="text" placeholder="Client ID">
-      <input class="input" type="text" placeholder="Kepp Alive">
-      -->
+        <div class="card-content">
+          <div class="tile is-ancestor is-vertical">
+            <div class="tile">
+              <div class="tile is-parent is-paddingless">
+                <div class="tile is-child box is-shadowless is-8">
+                  <label class="label">Topic</label>
+                  <input class="input" type="text" placeholder="Topic" />
+                </div>
+                <div class="tile is-child box is-shadowless is-2">
+                  <label class="label">QoS</label>
+                  <input class="input" type="text" placeholder="0" />
+                </div>
+                <div class="tile is-child box is-shadowless">
+                  <label class="label">&nbsp;</label>
+                  <button class="button is-link">
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+            </div>
 
-      <!-- host, port, clientId, username, password, keepAlive, ssl, cleanSession,
-      lastWillTopic, lastWillQoS, lastWillRetain, lastWillMessage -->
-      <!-- end form connection -->
+            <div class="tile">
+              <div class="tile is-parent is-paddingless">
+                <div class="tile is-child box is-shadowless">
+                  <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                      <tr>
+                        <th>Color</th>
+                        <th>Topic</th>
+                        <th class="has-text-centered">QoS</th>
+                        <th class="has-text-right"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><a href="#" class="tag is-primary" title="Choose a color">&nbsp;</a></td>
+                        <td>a/big/topic/to/fill/a/lot/of/space/in/the/ui</td>
+                        <td class="has-text-centered">0</td>
+                        <td class="has-text-right">
+                          <a class="button" title="Edit">
+                            <span class="icon">
+                              <i class="fas fa-edit"></i>
+                            </span>
+                          </a>
+                          <a class="button" title="Unsubscribe">
+                            <span class="icon">
+                              <i class="fas fa-trash"></i>
+                            </span>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <p>&nbsp;</p>
+
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            Messages &nbsp;
+            <span class="tag is-rounded">
+              0
+            </span>
+          </p>
+          <a href="#" class="card-header-icon" aria-label="more options">
+            <span class="icon">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </a>
+        </header>
+
+        <div class="card-content">
+          <table class="table is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Topic</th>
+                <th>Message</th>
+                <th class="has-text-centered">QoS</th>
+                <th class="has-text-right">Retained</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tag is-primary">&nbsp;</span></td>
+                <td>the topic</td>
+                <td>the message</td>
+                <td class="has-text-centered">0</td>
+                <td class="has-text-right">Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
     </div>
   </section>
