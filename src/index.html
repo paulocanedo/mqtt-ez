@@ -6,6 +6,8 @@
     <title>MQTT-EZ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <script defer src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script defer src="./js/ez.js"></script>
   </head>
   <body>
   <!-- <section class="section hero is-primary is-bold">
@@ -19,15 +21,65 @@
     </div>
   </section> -->
 
-  <section class="section">
-    <div class="container">
-      <div class="card">
+  <div class="columns">
+    <div class="column is-one-quarter">
+      <nav class="panel">
+        <p class="panel-heading">
+          MQTT-EZ
+        </p>
+        <!-- <div class="panel-block">
+          <p class="control has-icons-left">
+            <input class="input is-small" type="text" placeholder="search">
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+          </p>
+        </div> -->
+        <!-- <p class="panel-tabs">
+          <a class="is-active">all</a>
+          <a>public</a>
+          <a>private</a>
+          <a>sources</a>
+          <a>forks</a>
+        </p> -->
+        <a class="panel-block is-active" id="menu_link_connection">
+          <span class="panel-icon">
+            <i class="fas fa-chevron-circle-right"></i>
+          </span>
+          Connection
+        </a>
+        <a class="panel-block" id="menu_link_subscriptions">
+          <span class="panel-icon">
+            <i class="fas fa-chevron-circle-right"></i>
+          </span>
+          Subscriptions&nbsp;
+          <span class="tag is-rounded">
+            0
+          </span>
+        </a>
+        <a class="panel-block" id="menu_link_messages">
+          <span class="panel-icon">
+            <i class="fas fa-chevron-circle-right"></i>
+          </span>
+          Messsages&nbsp;
+          <span class="tag is-rounded">
+            0
+          </span>
+        </a>
+        <a class="panel-block" id="menu_link_publish">
+          <span class="panel-icon">
+            <i class="fas fa-chevron-circle-right"></i>
+          </span>
+          Publish
+        </a>
+      </nav>
+    </div>
+
+    <div class="column">
+      <div class="card" id="card_connection">
         <header class="card-header">
           <p class="card-header-title">
-            Connection &nbsp;
-            <span class="tag is-rounded">
-              Not Connected
-            </span>
+            Connection
           </p>
           <a href="#" class="card-header-icon" aria-label="more options">
             <span class="icon">
@@ -41,9 +93,18 @@
 
             <div class="tile">
               <div class="tile is-parent is-paddingless">
-                <div class="tile is-child box is-shadowless is-6">
+                <div class="tile is-child box is-shadowless is-5">
                   <label class="label">Host</label>
                   <input class="input" type="text" placeholder="Host" />
+                </div>
+                <div class="tile is-child box is-shadowless is-2">
+                  <label class="label">Protocol</label>
+                  <div class="select is-fullwidth">
+                    <select>
+                      <option>MQTT</option>
+                      <option>Web Socket</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="tile is-child box is-shadowless is-2">
                   <label class="label">Port</label>
@@ -98,15 +159,10 @@
       </div>
       <!-- form connection -->
 
-      <p>&nbsp;</p>
-
-      <div class="card">
+      <div class="card" id="card_subscriptions">
         <header class="card-header">
           <p class="card-header-title">
-            Subscriptions &nbsp;
-            <span class="tag is-rounded">
-              0
-            </span>
+            Subscriptions
           </p>
           <a href="#" class="card-header-icon" aria-label="more options">
             <span class="icon">
@@ -125,11 +181,17 @@
                 </div>
                 <div class="tile is-child box is-shadowless is-2">
                   <label class="label">QoS</label>
-                  <input class="input" type="text" placeholder="0" />
+                  <div class="select is-fullwidth">
+                    <select>
+                      <option>0</option>
+                      <option>1</option>
+                      <option>2</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="tile is-child box is-shadowless">
                   <label class="label">&nbsp;</label>
-                  <button class="button is-link">
+                  <button class="button is-link is-fullwidth">
                     Subscribe
                   </button>
                 </div>
@@ -176,15 +238,10 @@
         </div>
       </div>
 
-      <p>&nbsp;</p>
-
-      <div class="card">
+      <div class="card" id="card_messages">
         <header class="card-header">
           <p class="card-header-title">
-            Messages &nbsp;
-            <span class="tag is-rounded">
-              0
-            </span>
+            Messages
           </p>
           <a href="#" class="card-header-icon" aria-label="more options">
             <span class="icon">
@@ -216,6 +273,11 @@
           </table>
         </div>
       </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
 
     </div>
   </section>
