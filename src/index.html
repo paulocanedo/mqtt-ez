@@ -80,87 +80,89 @@
     </div>
 
     <div class="column">
-      <div class="card" id="card_connection">
-        <header class="card-header">
-          <p class="card-header-title">
-            Connection
-          </p>
-          <a href="#" class="card-header-icon" aria-label="more options">
-            <span class="icon">
-              <i class="fas fa-angle-down" aria-hidden="true"></i>
-            </span>
-          </a>
-        </header>
+      <form id="connection_form" onsubmit="return false;">
+        <div class="card" id="card_connection">
+          <header class="card-header">
+            <p class="card-header-title">
+              Connection
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </a>
+          </header>
 
-        <div class="card-content">
-          <div class="tile is-ancestor is-vertical">
+          <div class="card-content">
+            <div class="tile is-ancestor is-vertical">
 
-            <div class="tile">
-              <div class="tile is-parent is-paddingless">
-                <div class="tile is-child box is-shadowless is-5">
-                  <label class="label">Host</label>
-                  <input class="input" type="text" placeholder="Host" />
-                </div>
-                <div class="tile is-child box is-shadowless is-2">
-                  <label class="label">Protocol</label>
-                  <div class="select is-fullwidth">
-                    <select>
-                      <option>MQTT</option>
-                      <option>Web Socket</option>
-                    </select>
+              <div class="tile">
+                <div class="tile is-parent is-paddingless">
+                  <div class="tile is-child box is-shadowless is-5">
+                    <label class="label">Host</label>
+                    <input class="input" type="text" placeholder="Host" name="host" />
+                  </div>
+                  <div class="tile is-child box is-shadowless is-2">
+                    <label class="label">Protocol</label>
+                    <div class="select is-fullwidth">
+                      <select name="protocol">
+                        <option value="mqtt">MQTT</option>
+                        <option value="ws">Web Socket</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="tile is-child box is-shadowless is-2">
+                    <label class="label">Port</label>
+                    <input class="input" type="text" placeholder="1883" name="port" />
+                  </div>
+                  <div class="tile is-child box is-shadowless">
+                    <label class="label">Client ID</label>
+                    <input class="input" type="text" placeholder="Client ID" name="client_id" />
                   </div>
                 </div>
-                <div class="tile is-child box is-shadowless is-2">
-                  <label class="label">Port</label>
-                  <input class="input" type="text" placeholder="1883" />
-                </div>
-                <div class="tile is-child box is-shadowless">
-                  <label class="label">Client ID</label>
-                  <input class="input" type="text" placeholder="Client ID" />
+              </div>
+
+              <div class="tile">
+                <div class="tile is-parent is-paddingless">
+                  <div class="tile is-child box is-shadowless is-3">
+                    <label class="label">Username</label>
+                    <input class="input" type="text" placeholder="Username" name="username" />
+                  </div>
+                  <div class="tile is-child box is-shadowless is-2">
+                    <label class="label">Password</label>
+                    <input class="input" type="password" placeholder="Password" name="password" />
+                  </div>
+                  <div class="tile is-child box is-shadowless is-2">
+                    <label class="label">Keep Alive</label>
+                    <input class="input" type="text" placeholder="60" name="keep_alive" />
+                  </div>
+                  <div class="tile is-child box is-shadowless">
+                    <label class="label">
+                      SSL
+                    </label>
+                    <input type="checkbox" name="ssl" />
+                  </div>
+                  <div class="tile is-child box is-shadowless">
+                    <label class="label">
+                      Clean Session
+                    </label>
+                    <input type="checkbox" name="clean_session" />
+                  </div>
+                  <div class="tile is-child box is-shadowless is-2">
+                    <label class="label">
+                      &nbsp;
+                    </label>
+                    <button class="button is-link" id="connect_button">
+                      Connect
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="tile">
-              <div class="tile is-parent is-paddingless">
-                <div class="tile is-child box is-shadowless is-3">
-                  <label class="label">Username</label>
-                  <input class="input" type="text" placeholder="Username" />
-                </div>
-                <div class="tile is-child box is-shadowless is-2">
-                  <label class="label">Password</label>
-                  <input class="input" type="password" placeholder="Password" />
-                </div>
-                <div class="tile is-child box is-shadowless is-2">
-                  <label class="label">Keep Alive</label>
-                  <input class="input" type="text" placeholder="60" />
-                </div>
-                <div class="tile is-child box is-shadowless">
-                  <label class="label">
-                    SSL
-                  </label>
-                  <input type="checkbox" />
-                </div>
-                <div class="tile is-child box is-shadowless">
-                  <label class="label">
-                    Clean Session
-                  </label>
-                  <input type="checkbox" />
-                </div>
-                <div class="tile is-child box is-shadowless is-2">
-                  <label class="label">
-                    &nbsp;
-                  </label>
-                  <button class="button is-link" id="connect_button">
-                    Connect
-                  </button>
-                </div>
-              </div>
             </div>
-
           </div>
         </div>
-      </div>
+      <form id="connection_form">
       <!-- form connection -->
 
       <div class="card" id="card_subscriptions">
