@@ -80,7 +80,7 @@
     </div>
 
     <div class="column">
-      <form id="connection_form" onsubmit="return false;">
+      <form id="connection_form">
         <div class="card" id="card_connection">
           <header class="card-header">
             <p class="card-header-title">
@@ -100,7 +100,7 @@
                 <div class="tile is-parent is-paddingless">
                   <div class="tile is-child box is-shadowless is-5">
                     <label class="label">Host</label>
-                    <input class="input" type="text" placeholder="Host" name="host" />
+                    <input class="input" type="text" name="host" />
                   </div>
                   <div class="tile is-child box is-shadowless is-2">
                     <label class="label">Protocol</label>
@@ -113,11 +113,11 @@
                   </div>
                   <div class="tile is-child box is-shadowless is-2">
                     <label class="label">Port</label>
-                    <input class="input" type="text" placeholder="1883" name="port" />
+                    <input class="input" type="text" name="port" />
                   </div>
                   <div class="tile is-child box is-shadowless">
                     <label class="label">Client ID</label>
-                    <input class="input" type="text" placeholder="Client ID" name="client_id" />
+                    <input class="input" type="text" name="client_id" />
                   </div>
                 </div>
               </div>
@@ -126,15 +126,15 @@
                 <div class="tile is-parent is-paddingless">
                   <div class="tile is-child box is-shadowless is-3">
                     <label class="label">Username</label>
-                    <input class="input" type="text" placeholder="Username" name="username" />
+                    <input class="input" type="text" name="username" />
                   </div>
                   <div class="tile is-child box is-shadowless is-2">
                     <label class="label">Password</label>
-                    <input class="input" type="password" placeholder="Password" name="password" />
+                    <input class="input" type="password" name="password" />
                   </div>
                   <div class="tile is-child box is-shadowless is-2">
                     <label class="label">Keep Alive</label>
-                    <input class="input" type="text" placeholder="60" name="keep_alive" />
+                    <input class="input" type="text" name="keep_alive" />
                   </div>
                   <div class="tile is-child box is-shadowless">
                     <label class="label">
@@ -162,87 +162,89 @@
             </div>
           </div>
         </div>
-      <form id="connection_form">
+      </form>
       <!-- form connection -->
 
-      <div class="card" id="card_subscriptions">
-        <header class="card-header">
-          <p class="card-header-title">
-            Subscriptions
-          </p>
-          <a href="#" class="card-header-icon" aria-label="more options">
-            <span class="icon">
-              <i class="fas fa-angle-down" aria-hidden="true"></i>
-            </span>
-          </a>
-        </header>
+      <form id="subscriptions_form">
+        <div class="card" id="card_subscriptions">
+          <header class="card-header">
+            <p class="card-header-title">
+              Subscriptions
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </a>
+          </header>
 
-        <div class="card-content">
-          <div class="tile is-ancestor is-vertical">
-            <div class="tile">
-              <div class="tile is-parent is-paddingless">
-                <div class="tile is-child box is-shadowless is-8">
-                  <label class="label">Topic</label>
-                  <input class="input" type="text" placeholder="Topic" />
-                </div>
-                <div class="tile is-child box is-shadowless is-2">
-                  <label class="label">QoS</label>
-                  <div class="select is-fullwidth">
-                    <select>
-                      <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                    </select>
+          <div class="card-content">
+            <div class="tile is-ancestor is-vertical">
+              <div class="tile">
+                <div class="tile is-parent is-paddingless">
+                  <div class="tile is-child box is-shadowless is-8">
+                    <label class="label">Topic</label>
+                    <input class="input" type="text" name="topic" placeholder="Topic" />
+                  </div>
+                  <div class="tile is-child box is-shadowless is-2">
+                    <label class="label">QoS</label>
+                    <div class="select is-fullwidth">
+                      <select>
+                        <option>0</option>
+                        <option>1</option>
+                        <option>2</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="tile is-child box is-shadowless">
+                    <label class="label">&nbsp;</label>
+                    <button class="button is-link is-fullwidth">
+                      Subscribe
+                    </button>
                   </div>
                 </div>
-                <div class="tile is-child box is-shadowless">
-                  <label class="label">&nbsp;</label>
-                  <button class="button is-link is-fullwidth">
-                    Subscribe
-                  </button>
+              </div>
+
+              <div class="tile">
+                <div class="tile is-parent is-paddingless">
+                  <div class="tile is-child box is-shadowless">
+                    <table class="table is-hoverable is-fullwidth">
+                      <thead>
+                        <tr>
+                          <th>Color</th>
+                          <th>Topic</th>
+                          <th class="has-text-centered">QoS</th>
+                          <th class="has-text-right"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><a href="#" class="tag is-primary" title="Choose a color">&nbsp;</a></td>
+                          <td>a/big/topic/to/fill/a/lot/of/space/in/the/ui</td>
+                          <td class="has-text-centered">0</td>
+                          <td class="has-text-right">
+                            <a class="button" title="Edit">
+                              <span class="icon">
+                                <i class="fas fa-edit"></i>
+                              </span>
+                            </a>
+                            <a class="button" title="Unsubscribe">
+                              <span class="icon">
+                                <i class="fas fa-trash"></i>
+                              </span>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="tile">
-              <div class="tile is-parent is-paddingless">
-                <div class="tile is-child box is-shadowless">
-                  <table class="table is-hoverable is-fullwidth">
-                    <thead>
-                      <tr>
-                        <th>Color</th>
-                        <th>Topic</th>
-                        <th class="has-text-centered">QoS</th>
-                        <th class="has-text-right"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><a href="#" class="tag is-primary" title="Choose a color">&nbsp;</a></td>
-                        <td>a/big/topic/to/fill/a/lot/of/space/in/the/ui</td>
-                        <td class="has-text-centered">0</td>
-                        <td class="has-text-right">
-                          <a class="button" title="Edit">
-                            <span class="icon">
-                              <i class="fas fa-edit"></i>
-                            </span>
-                          </a>
-                          <a class="button" title="Unsubscribe">
-                            <span class="icon">
-                              <i class="fas fa-trash"></i>
-                            </span>
-                          </a>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </div>
-
           </div>
         </div>
-      </div>
+      </form>
 
       <div class="card" id="card_messages">
         <header class="card-header">

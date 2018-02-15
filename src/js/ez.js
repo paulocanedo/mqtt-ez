@@ -54,7 +54,7 @@ var ui_utils = (() => {
       current_card = card;
       card.link_card.classList.add('is-active');
       card.style.display = 'inherit';
-    }
+    };
 
     var linkCardMenu = (menu, card) => {
       menu.addEventListener('click', evt => setCurrentCard(card));
@@ -66,23 +66,34 @@ var ui_utils = (() => {
     setCurrentCard(card_connection);
 
     connect_button.addEventListener('click', connect_action);
+
+    let $$ = query => document.querySelectorAll(query);
+    
+    //disable all forms submit
+    $$('form').forEach(form => form.onsubmit = evt => false);
+
+    let defaultParams = mqtt_adapter.getDefaultParams();
+    protocol_field.value = defaultParams.protocol;
+    host_field.placeholder = defaultParams.host;
+    port_field.placeholder = defaultParams.port;
+    clientId_field.placeholder = defaultParams.clientId;
+    keepAlive_field.placeholder = defaultParams.keepAlive;
+    ssl_field.checked = defaultParams.ssl;
+    cleanSession_field.checked = defaultParams.cleanSession;
   });
 
   return {
     getConnectionParams() {
-      let host = "localhost", protocol = "mqtt", port = 1883, clientId = "",
-          username = "", password = "", keepAlive = 60,
-          ssl = false, cleanSession = true;
-
-      host = host_field.value;
-      protocol = protocol_field.value;
-      port = parseInt(port_field.value);
-      clientId = clientId_field.value;
-      username = username_field.value;
-      password = password_field.value;
-      keepAlive = parseInt(keepAlive_field.value);
-      ssl = ssl_field.value;
-      cleanSession = cleanSession_field.value;
+      let defaultParams = mqtt_adapter.getDefaultParams();
+      let host = host_field.value || defaultParams.host,
+          protocol = protocol_field.value || defaultParams.protocol,
+          port = parseInt(port_field.value) || defaultParams.port,
+          clientId = clientId_field.value || defaultParams.clientId,
+          username = username_field.value,
+          password = password_field.value,
+          keepAlive = parseInt(keepAlive_field.value) || defaultParams.keepAlive,
+          ssl = ssl_field.checked,
+          cleanSession = cleanSession_field.checked;
 
       return {
         'host': host,
@@ -94,18 +105,40 @@ var ui_utils = (() => {
         'keepAlive': keepAlive,
         'ssl': ssl,
         'cleanSession': cleanSession
-      }
+      };
     }
   };
 })();
 // end UI events ---------------------------------------------------------------
 
 const mqtt_adapter = (() => {
+  let clientId = 'mqtt-ez_' + Math.random().toString(16).substr(2, 8);
+
   return {
+    getDefaultParams() {
+      return {
+        'host': 'localhost',
+        'protocol': 'ws',
+        'port': 1883,
+        'clientId': clientId,
+        'keepAlive': 60,
+        'ssl': false,
+        'cleanSession': true
+      };
+    },
     connect(source) {
       let params = ui_utils.getConnectionParams();
+      let url = params.protocol + (params.ssl ? 's' : '') + '://' + params.host;
 
-      var client = mqtt.connect(`${params.protocol}://${params.host}`, {connectTimeout: 3 * 1000}, () => {});
+      var client = mqtt.connect(`${url}`, {
+        'keepalive': params.keepAlive,
+        'clientId': params.clientId,
+        'protocolVersion': 4,
+        'clean': params.cleanSession,
+        'reconnectPeriod': 1000,//milis
+        'username': params.username,
+        'password': params.password
+      }, () => {});
 
       client.on('connect', connack => {
         source.classList.remove('is-loading');
@@ -119,12 +152,3 @@ const mqtt_adapter = (() => {
     }
   };
 })();
-
-// const mqtt = require('mqtt');
-
-// var client = mqtt.connect('wss://iot.eclipse.org');
-// var client = mqtt.connect('ws://localhost');
-//
-// client.on('connect', function() {
-//   console.log('connected');
-// });
