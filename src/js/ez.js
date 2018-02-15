@@ -11,10 +11,10 @@ var ui_utils = (() => {
   const card_subscriptions = $('#card_subscriptions');
   const card_messages      = $('#card_messages');
 
-  const connect_button = $('#connect_button');
   const connection_indicator = $('#connection_indicator');
 
   const connection_form = $('#connection_form');
+  const connect_button = connection_form.connect_button;
   const host_field = connection_form.host;
   const protocol_field = connection_form.protocol;
   const port_field = connection_form.port;
@@ -24,6 +24,9 @@ var ui_utils = (() => {
   const keepAlive_field = connection_form.keep_alive;
   const ssl_field = connection_form.ssl;
   const cleanSession_field = connection_form.clean_session;
+
+  const subscriptions_form = $('#subscriptions_form');
+  const subscribe_button = subscriptions_form.subscribe_button;
 
   card_connection.link_card    = menu_link_connection;
   card_subscriptions.link_card = menu_link_subscriptions;
@@ -37,8 +40,24 @@ var ui_utils = (() => {
     // initEvents();
     var connect_action = () => {
       var source = connect_button; //this should come from event
-      source.classList.add('is-loading');
-      mqtt_adapter.connect(source);
+      // source.classList.add('is-loading');
+      mqtt_adapter.connect(_getConnectionParams());
+
+      mqtt_adapter.on('connect', connack => {
+        source.classList.remove('is-loading');
+        connection_indicator.classList.replace('has-text-grey-light', 'has-text-success');
+      });
+
+      mqtt_adapter.on('error', error => {
+        source.classList.remove('is-loading');
+        connection_indicator.classList.replace('has-text-grey-light', 'has-text-danger');
+      });
+    };
+
+    var subscribe_action = () => {
+      let topic = subscriptions_form.topic.value;
+
+      mqtt_adapter.subscribe(topic);
     };
 
     var removeAllCards = () => {
@@ -66,9 +85,10 @@ var ui_utils = (() => {
     setCurrentCard(card_connection);
 
     connect_button.addEventListener('click', connect_action);
+    subscribe_button.addEventListener('click', subscribe_action);
 
     let $$ = query => document.querySelectorAll(query);
-    
+
     //disable all forms submit
     $$('form').forEach(form => form.onsubmit = evt => false);
 
@@ -82,30 +102,35 @@ var ui_utils = (() => {
     cleanSession_field.checked = defaultParams.cleanSession;
   });
 
+  let _getConnectionParams = () => {
+    let defaultParams = mqtt_adapter.getDefaultParams();
+    let host = host_field.value || defaultParams.host,
+        protocol = protocol_field.value || defaultParams.protocol,
+        port = parseInt(port_field.value) || defaultParams.port,
+        clientId = clientId_field.value || defaultParams.clientId,
+        username = username_field.value,
+        password = password_field.value,
+        keepAlive = parseInt(keepAlive_field.value) || defaultParams.keepAlive,
+        ssl = ssl_field.checked,
+        cleanSession = cleanSession_field.checked;
+
+    return {
+      'host': host,
+      'protocol': protocol,
+      'port': port,
+      'clientId': clientId,
+      'username': username,
+      'password': password,
+      'keepAlive': keepAlive,
+      'ssl': ssl,
+      'cleanSession': cleanSession
+    };
+  };
+
   return {
     getConnectionParams() {
-      let defaultParams = mqtt_adapter.getDefaultParams();
-      let host = host_field.value || defaultParams.host,
-          protocol = protocol_field.value || defaultParams.protocol,
-          port = parseInt(port_field.value) || defaultParams.port,
-          clientId = clientId_field.value || defaultParams.clientId,
-          username = username_field.value,
-          password = password_field.value,
-          keepAlive = parseInt(keepAlive_field.value) || defaultParams.keepAlive,
-          ssl = ssl_field.checked,
-          cleanSession = cleanSession_field.checked;
-
-      return {
-        'host': host,
-        'protocol': protocol,
-        'port': port,
-        'clientId': clientId,
-        'username': username,
-        'password': password,
-        'keepAlive': keepAlive,
-        'ssl': ssl,
-        'cleanSession': cleanSession
-      };
+      console.log(_getConnectionParams());
+      return _getConnectionParams();
     }
   };
 })();
@@ -113,6 +138,7 @@ var ui_utils = (() => {
 
 const mqtt_adapter = (() => {
   let clientId = 'mqtt-ez_' + Math.random().toString(16).substr(2, 8);
+  let client = null;
 
   return {
     getDefaultParams() {
@@ -126,11 +152,10 @@ const mqtt_adapter = (() => {
         'cleanSession': true
       };
     },
-    connect(source) {
-      let params = ui_utils.getConnectionParams();
+    connect(params) {
       let url = params.protocol + (params.ssl ? 's' : '') + '://' + params.host;
 
-      var client = mqtt.connect(`${url}`, {
+      client = mqtt.connect(`${url}`, {
         'keepalive': params.keepAlive,
         'clientId': params.clientId,
         'protocolVersion': 4,
@@ -138,17 +163,13 @@ const mqtt_adapter = (() => {
         'reconnectPeriod': 1000,//milis
         'username': params.username,
         'password': params.password
-      }, () => {});
-
-      client.on('connect', connack => {
-        source.classList.remove('is-loading');
-        connection_indicator.classList.replace('has-text-grey-light', 'has-text-success');
       });
-
-      client.on('error', error => {
-        source.classList.remove('is-loading');
-        connection_indicator.classList.replace('has-text-grey-light', 'has-text-danger');
-      });
+    },
+    subscribe(topic) {
+      client.subscribe(topic);
+    },
+    on(evt, callback) {
+      client.on(evt, callback);
     }
   };
 })();
