@@ -116,6 +116,7 @@ var ui_utils = (() => {
   const card_connection    = $('#card_connection');
   const card_subscriptions = $('#card_subscriptions');
   const card_messages      = $('#card_messages');
+  const card_publish       = $('#card_publish');
 
   const connection_indicator = $('#connection_indicator');
 
@@ -137,11 +138,15 @@ var ui_utils = (() => {
   const topics_table = $('#topics_table');
   const messages_table = $('#messages_table');
 
+  const publish_form = $('#publish_form');
+  const publish_button = publish_form.publish_button;
+
   card_connection.link_card    = menu_link_connection;
   card_subscriptions.link_card = menu_link_subscriptions;
   card_messages.link_card      = menu_link_messages;
+  card_publish.link_card       = menu_link_publish;
 
-  const cards = [card_connection, card_subscriptions, card_messages];
+  const cards = [card_connection, card_subscriptions, card_messages, card_publish];
   const menus = [menu_link_connection, menu_link_subscriptions, menu_link_messages, menu_link_publish];
   let current_card = null;
 
@@ -191,24 +196,36 @@ var ui_utils = (() => {
       topics_table.tBodies[0].appendChild(line);
 
       mqtt_adapter.subscribe(topic);
-      mqtt_adapter.on('message', (topic, message) => {
-        let newLine = (color, topic, message, qos, retained) => {
+      mqtt_adapter.on('message', (topic, message, packet) => {
+        console.log(topic, message);
+        let newLine = (color, timestamp, topic, message, qos, retained) => {
           let cColor = table_util.createColumn(table_util.COLUMN_COLOR);
+          let cTimestamp = table_util.createColumn(table_util.COLUMN_TEXT, {text: `${timestamp.toLocaleString()}`});
           let cTopic = table_util.createColumn(table_util.COLUMN_TEXT, {text: topic});
           let cMessage = table_util.createColumn(table_util.COLUMN_TEXT, {text: message});
           let cQoS = table_util.createColumn(table_util.COLUMN_TEXT, {text: `${qos}`, alignment: 'has-text-centered'});
           let cRetained = table_util.createColumn(table_util.COLUMN_TEXT, {text: retained, alignment: 'has-text-right'});
 
           let line = document.createElement('tr');
-          for(let column of [cColor, cTopic, cMessage, cQoS, cRetained])
+          for(let column of [cColor, cTimestamp, cTopic, cMessage, cQoS, cRetained])
             line.appendChild(column.root());
 
           return line;
         };
 
-        let line = newLine('#0000ff', topic, message, '0', 'No');
+        let timestamp = new Date();
+        let line = newLine('#0000ff', timestamp, topic, message, `${packet.qos}`, packet.retain ? 'Yes' : 'No' );
         messages_table.tBodies[0].appendChild(line);
       });
+    };
+
+    var publish_action = () => {
+      let topic   = publish_form.topic.value,
+          qos     = publish_form.qos.value,
+          retain  = publish_form.retain.checked ? true : false,
+          message = 'teste';
+
+      mqtt_adapter.publish(topic, qos, retain, message);
     };
 
     var removeAllCards = () => {
@@ -233,11 +250,13 @@ var ui_utils = (() => {
     linkCardMenu(menu_link_connection, card_connection);
     linkCardMenu(menu_link_subscriptions, card_subscriptions);
     linkCardMenu(menu_link_messages, card_messages);
+    linkCardMenu(menu_link_publish, card_publish);
     // setCurrentCard(card_subscriptions);
     setCurrentCard(card_connection);
 
     connect_button.addEventListener('click', connect_action);
     subscribe_button.addEventListener('click', subscribe_action);
+    publish_button.addEventListener('click', publish_action);
 
     let $$ = query => document.querySelectorAll(query);
 
@@ -320,6 +339,16 @@ const mqtt_adapter = (() => {
     },
     subscribe(topic) {
       client.subscribe(topic);
+    },
+    publish(topic, qos, retain, message) {
+      qos = parseInt(qos);
+      client.publish(topic, message, {
+        'qos': qos,
+        'retain': retain
+      },
+      () => {
+        console.log("published");
+      });
     },
     on(evt, callback) {
       client.on(evt, callback);
