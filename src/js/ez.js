@@ -108,6 +108,9 @@ let table_util = (() => {
 var ui_utils = (() => {
   let $ = query => document.querySelector(query);
 
+  let current_card = null;
+  let messagesUnreaded = 0;
+
   const menu_link_connection    = $('#menu_link_connection');
   const menu_link_subscriptions = $('#menu_link_subscriptions');
   const menu_link_messages      = $('#menu_link_messages');
@@ -148,7 +151,6 @@ var ui_utils = (() => {
 
   const cards = [card_connection, card_subscriptions, card_messages, card_publish];
   const menus = [menu_link_connection, menu_link_subscriptions, menu_link_messages, menu_link_publish];
-  let current_card = null;
 
   window.addEventListener('DOMContentLoaded', evt => {
     // initEvents();
@@ -160,13 +162,13 @@ var ui_utils = (() => {
       mqtt_adapter.on('connect', connack => {
         source.classList.remove('is-loading');
         connection_indicator.classList.replace('has-text-grey-light', 'has-text-success');
-        menu_link_connection.style.backgroundColor = '#23d160';
+        // menu_link_connection.style.backgroundColor = '#23d160';
       });
 
       mqtt_adapter.on('error', error => {
         source.classList.remove('is-loading');
         connection_indicator.classList.replace('has-text-grey-light', 'has-text-danger');
-        menu_link_connection.style.backgroundColor = '#ff0000';
+        // menu_link_connection.style.backgroundColor = '#ff0000';
       });
     };
 
@@ -197,7 +199,7 @@ var ui_utils = (() => {
 
       mqtt_adapter.subscribe(topic);
       mqtt_adapter.on('message', (topic, message, packet) => {
-        console.log(topic, message);
+
         let newLine = (color, timestamp, topic, message, qos, retained) => {
           let cColor = table_util.createColumn(table_util.COLUMN_COLOR);
           let cTimestamp = table_util.createColumn(table_util.COLUMN_TEXT, {text: `${timestamp.toLocaleString()}`});
@@ -223,7 +225,7 @@ var ui_utils = (() => {
       let topic   = publish_form.topic.value,
           qos     = publish_form.qos.value,
           retain  = publish_form.retain.checked ? true : false,
-          message = 'teste';
+          message = publish_form.message.value;
 
       mqtt_adapter.publish(topic, qos, retain, message);
     };
