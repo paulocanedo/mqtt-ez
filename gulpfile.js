@@ -20,15 +20,15 @@ gulp.task('html', function () {
     .pipe(connect.reload());
 });
 
-gulp.task('js', function () {
-  gulp.src('./src/**/*.js')
-    .pipe(debug({title: 'JS:'}))
-    .pipe(gulp.dest('./app'))
-    .pipe(connect.reload());
-});
+// gulp.task('js', function () {
+//   gulp.src('./src/**/*.js')
+//     .pipe(debug({title: 'JS:'}))
+//     .pipe(gulp.dest('./app'))
+//     .pipe(connect.reload());
+// });
 
 gulp.task('watch', function () {
-  gulp.watch(['./src/**/*.html', './src/**/*.js'], ['html', 'js']);
+  gulp.watch(['./src/**/*.html'], ['html']);
 });
 
 gulp.task('server', ['connect', 'watch']);

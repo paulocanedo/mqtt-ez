@@ -1,145 +1,13 @@
-const COLORS_AVAILABLE = [
-  '#000000', '#40E0D0', '#FFA07A', '#800080', '#708090', '#DDA0DD', '#FF8C00', '#8FBC8F', '#0000CD',
-  '#556B2F', '#00008B', '#696969', '#4B0082', '#FFE4B5', '#DAA520', '#A0522D', '#006400', '#FF4500'
-];
+const observer     = require('./observer');
+const mqtt_adapter = require('./mqtt_adapter');
+const table_util   = require('./table_util');
 
-let observer = (() => {
-  let observers = new Map();
+const ui_util = (() => {
+  const COLORS_AVAILABLE = [
+    '#000000', '#40E0D0', '#FFA07A', '#800080', '#708090', '#DDA0DD', '#FF8C00', '#8FBC8F', '#0000CD',
+    '#556B2F', '#00008B', '#696969', '#4B0082', '#FFE4B5', '#DAA520', '#A0522D', '#006400', '#FF4500'
+  ];
 
-  let getHandlers = (what) => {
-    let collection = observers.get(what);
-    if(!collection) {
-      collection = [];
-      observers.set(what, collection);
-    }
-    return collection;
-  };
-
-  return {
-    subscribe(what, callback) {
-      let handlers = getHandlers(what);
-      handlers.push(callback);
-    },
-    publish(what, args) {
-      let handlers = getHandlers(what);
-      for(let handler of handlers) {
-        handler(args);
-      }
-    }
-  };
-})();
-
-let table_util = (() => {
-  let createColumnColor = (args = {}) => {
-    let column = document.createElement('td');
-    let color_link = document.createElement('a');
-    let colorEl = document.createElement('i');
-
-    color_link.title = "Choose a color";
-    colorEl.classList.add('fas', 'fa-square', 'fa-lg');
-
-    // color_link.appendChild(colorEl);
-    // column.appendChild(color_link);
-    column.appendChild(colorEl);
-    colorEl.style.color = args.color;
-
-    return {
-      setColor(color) {
-        colorEl.style.color = color;
-      },
-      root() {
-        return column;
-      }
-    };
-  };
-  let createColumnText = (args = {}) => {
-    let column = document.createElement('td');
-    let textNode = document.createTextNode(args.text || '');
-    column.className = args.alignment || '';
-    column.appendChild(textNode);
-
-    return {
-      setText(text) {
-        textNode.textContent = text;
-      },
-      setAlignment(alignment) {
-        column.className = alignment;
-      },
-      root() {
-        return column;
-      }
-    };
-  };
-
-  let createColumnControls = (args = {}) => {
-    let column = document.createElement('td');
-    column.className = 'has-text-right';
-
-    let createButton = () => {
-      let a = document.createElement('a');
-      a.href = '#';
-      a.className = 'button';
-
-      return a;
-    };
-    let createIcon = (icon_code) => {
-      let icon = document.createElement('i');
-      icon.classList.add('fas', icon_code);
-
-      return icon;
-    };
-    let wrapIcon = (icon) => {
-      let wrapper = document.createElement('span');
-      wrapper.className = 'icon';
-      wrapper.appendChild(icon);
-      return wrapper;
-    };
-
-    let editButton = createButton();
-    let editIcon = createIcon('fa-edit');
-
-    let deleteButton = createButton();
-    let deleteIcon = createIcon('fa-trash');
-
-    editButton.appendChild(wrapIcon(editIcon));
-    deleteButton.appendChild(wrapIcon(deleteIcon));
-
-    column.appendChild(editButton);
-    column.appendChild(document.createTextNode(' '));
-    column.appendChild(deleteButton);
-
-    return {
-      setAlignment(alignment) {
-        column.className = alignment;
-      },
-      root() {
-        return column;
-      }
-    };
-  };
-  return {
-    COLUMN_COLOR: 0,
-    COLUMN_TEXT: 1,
-    COLUMN_CONTROLS: 2,
-    createColumn(type, args) {
-      switch (type) {
-        case table_util.COLUMN_COLOR:
-          return createColumnColor(args);
-          break;
-        case table_util.COLUMN_TEXT:
-          return createColumnText(args);
-          break;
-        case table_util.COLUMN_CONTROLS:
-          return createColumnControls(args);
-          break;
-        default:
-
-      }
-    }
-  };
-})();
-
-var ui_utils = (() => {
   let $ = query => document.querySelector(query);
 
   let current_card = null;
@@ -362,56 +230,9 @@ var ui_utils = (() => {
 
   return {
     getConnectionParams() {
-      console.log(_getConnectionParams());
       return _getConnectionParams();
     }
   };
 })();
-// end UI events ---------------------------------------------------------------
 
-const mqtt_adapter = (() => {
-  let clientId = 'mqtt-ez_' + Math.random().toString(16).substr(2, 8);
-  let client = null;
-
-  return {
-    getDefaultParams() {
-      return {
-        'host': 'localhost',
-        'protocol': 'ws',
-        'port': 80,
-        'clientId': clientId,
-        'keepAlive': 60,
-        'ssl': false,
-        'cleanSession': true
-      };
-    },
-    connect(params) {
-      let url = params.protocol + (params.ssl ? 's' : '') + '://' + params.host;
-      console.log(url);
-
-      client = mqtt.connect(`${url}`, {
-        'keepalive': params.keepAlive,
-        'clientId': params.clientId,
-        'protocolVersion': 4,
-        'clean': params.cleanSession,
-        'reconnectPeriod': 1000,//milis
-        'username': params.username,
-        'password': params.password
-      });
-    },
-    subscribe(topic) {
-      //verify if is connected
-      client.subscribe(topic);
-    },
-    publish(topic, qos, retain, message, callback) {
-      qos = parseInt(qos);
-      client.publish(topic, message, {
-        'qos': qos,
-        'retain': retain
-      }, callback);
-    },
-    on(evt, callback) {
-      client.on(evt, callback);
-    }
-  };
-})();
+module.exports = ui_util;

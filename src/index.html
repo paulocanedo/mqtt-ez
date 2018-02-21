@@ -6,323 +6,322 @@
     <title>MQTT-EZ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
-    <script defer src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-    <script defer src="./js/ez.js"></script>
+    <script defer src="./bundle.js"></script>
   </head>
   <body>
-  <!-- <section class="section hero is-primary is-bold">
+  <section class="section hero">
     <div class="container">
-      <h1 class="title">
+      <!-- <h1 class="title">
         MQTT-EZ
       </h1>
       <p class="subtitle">
         An easy and complete MQTT tool!
-      </p>
-    </div>
-  </section> -->
-
-  <div class="columns">
-    <div class="column is-one-quarter">
-      <nav class="panel">
-        <p class="panel-heading">
-          MQTT-EZ
-        </p>
-        <!-- <div class="panel-block">
-          <p class="control has-icons-left">
+      </p> -->
+      <div class="columns">
+        <div class="column is-one-quarter">
+          <nav class="panel">
+            <p class="panel-heading">
+              MQTT-EZ
+            </p>
+            <!-- <div class="panel-block">
+            <p class="control has-icons-left">
             <input class="input is-small" type="text" placeholder="search">
             <span class="icon is-small is-left">
-              <i class="fas fa-search"></i>
-            </span>
-          </p>
-        </div> -->
-        <!-- <p class="panel-tabs">
-          <a class="is-active">all</a>
-          <a>public</a>
-          <a>private</a>
-          <a>sources</a>
-          <a>forks</a>
-        </p> -->
-        <a class="panel-block is-active" id="menu_link_connection">
-          <span class="panel-icon">
-            <i class="fas fa-chevron-circle-right"></i>
+            <i class="fas fa-search"></i>
           </span>
-          Connection&nbsp;
-          <!-- <span class="icon has-text-success"> -->
-          <span class="icon has-text-grey-light" id="connection_indicator">
-            <i class="fas fa-circle"></i>
-          </span>
-        </a>
-        <a class="panel-block" id="menu_link_subscriptions">
-          <span class="panel-icon">
-            <i class="fas fa-chevron-circle-right"></i>
-          </span>
-          Subscriptions
-        </a>
-        <a class="panel-block" id="menu_link_messages">
-          <span class="panel-icon">
-            <i class="fas fa-chevron-circle-right"></i>
-          </span>
-          Messsages&nbsp;
-          <span class="tag is-rounded" id="message_count_label">
-            0
-          </span>
-        </a>
-        <a class="panel-block" id="menu_link_publish">
-          <span class="panel-icon">
-            <i class="fas fa-chevron-circle-right"></i>
-          </span>
-          Publish
-        </a>
-      </nav>
-    </div>
+        </p>
+      </div> -->
+      <!-- <p class="panel-tabs">
+      <a class="is-active">all</a>
+      <a>public</a>
+      <a>private</a>
+      <a>sources</a>
+      <a>forks</a>
+    </p> -->
+    <a class="panel-block is-active" id="menu_link_connection">
+      <span class="panel-icon">
+        <i class="fas fa-chevron-circle-right"></i>
+      </span>
+      Connection&nbsp;
+      <!-- <span class="icon has-text-success"> -->
+      <span class="icon has-text-grey-light" id="connection_indicator">
+        <i class="fas fa-circle"></i>
+      </span>
+    </a>
+    <a class="panel-block" id="menu_link_subscriptions">
+      <span class="panel-icon">
+        <i class="fas fa-chevron-circle-right"></i>
+      </span>
+      Subscriptions
+    </a>
+    <a class="panel-block" id="menu_link_messages">
+      <span class="panel-icon">
+        <i class="fas fa-chevron-circle-right"></i>
+      </span>
+      Messsages&nbsp;
+      <span class="tag is-rounded" id="message_count_label">
+        0
+      </span>
+    </a>
+    <a class="panel-block" id="menu_link_publish">
+      <span class="panel-icon">
+        <i class="fas fa-chevron-circle-right"></i>
+      </span>
+      Publish
+    </a>
+  </nav>
+</div>
 
-    <div class="column">
-      <form id="connection_form">
-        <div class="card" id="card_connection">
-          <header class="card-header">
-            <p class="card-header-title">
-              Connection
-            </p>
-            <a href="#" class="card-header-icon" aria-label="more options">
-              <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </a>
-          </header>
+<div class="column">
+  <form id="connection_form">
+    <div class="card" id="card_connection">
+      <header class="card-header">
+        <p class="card-header-title">
+          Connection
+        </p>
+        <a href="#" class="card-header-icon" aria-label="more options">
+          <span class="icon">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </a>
+      </header>
 
-          <div class="card-content">
-            <div class="tile is-ancestor is-vertical">
+      <div class="card-content">
+        <div class="tile is-ancestor is-vertical">
 
-              <div class="tile">
-                <div class="tile is-parent is-paddingless">
-                  <div class="tile is-child box is-shadowless is-5">
-                    <label class="label">Host</label>
-                    <input class="input" type="text" name="host" />
-                  </div>
-                  <div class="tile is-child box is-shadowless is-2">
-                    <label class="label">Protocol</label>
-                    <div class="select is-fullwidth">
-                      <select name="protocol">
-                        <option value="mqtt">MQTT</option>
-                        <option value="ws">Web Socket</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="tile is-child box is-shadowless is-2">
-                    <label class="label">Port</label>
-                    <input class="input" type="text" name="port" />
-                  </div>
-                  <div class="tile is-child box is-shadowless">
-                    <label class="label">Client ID</label>
-                    <input class="input" type="text" name="client_id" />
-                  </div>
+          <div class="tile">
+            <div class="tile is-parent is-paddingless">
+              <div class="tile is-child box is-shadowless is-5">
+                <label class="label">Host</label>
+                <input class="input" type="text" name="host" />
+              </div>
+              <div class="tile is-child box is-shadowless is-2">
+                <label class="label">Protocol</label>
+                <div class="select is-fullwidth">
+                  <select name="protocol">
+                    <option value="mqtt">MQTT</option>
+                    <option value="ws">Web Socket</option>
+                  </select>
                 </div>
               </div>
-
-              <div class="tile">
-                <div class="tile is-parent is-paddingless">
-                  <div class="tile is-child box is-shadowless is-3">
-                    <label class="label">Username</label>
-                    <input class="input" type="text" name="username" />
-                  </div>
-                  <div class="tile is-child box is-shadowless is-2">
-                    <label class="label">Password</label>
-                    <input class="input" type="password" name="password" />
-                  </div>
-                  <div class="tile is-child box is-shadowless is-2">
-                    <label class="label">Keep Alive</label>
-                    <input class="input" type="text" name="keep_alive" />
-                  </div>
-                  <div class="tile is-child box is-shadowless">
-                    <label class="label">
-                      SSL
-                    </label>
-                    <input type="checkbox" name="ssl" />
-                  </div>
-                  <div class="tile is-child box is-shadowless">
-                    <label class="label">
-                      Clean Session
-                    </label>
-                    <input type="checkbox" name="clean_session" />
-                  </div>
-                  <div class="tile is-child box is-shadowless is-2">
-                    <label class="label">
-                      &nbsp;
-                    </label>
-                    <button class="button is-link" name="connect_button">
-                      Connect
-                    </button>
-                  </div>
-                </div>
+              <div class="tile is-child box is-shadowless is-2">
+                <label class="label">Port</label>
+                <input class="input" type="text" name="port" />
               </div>
-
+              <div class="tile is-child box is-shadowless">
+                <label class="label">Client ID</label>
+                <input class="input" type="text" name="client_id" />
+              </div>
             </div>
           </div>
-        </div>
-      </form>
-      <!-- form connection -->
 
-      <form id="subscriptions_form">
-        <div class="card" id="card_subscriptions">
-          <header class="card-header">
-            <p class="card-header-title">
-              Subscriptions
-            </p>
-            <a href="#" class="card-header-icon" aria-label="more options">
-              <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </a>
-          </header>
-
-          <div class="card-content">
-            <div class="tile is-ancestor is-vertical">
-              <div class="tile">
-                <div class="tile is-parent is-paddingless">
-                  <div class="tile is-child box is-shadowless is-8">
-                    <label class="label">Topic</label>
-                    <input class="input" type="text" name="topic" placeholder="Topic" />
-                  </div>
-                  <div class="tile is-child box is-shadowless is-2">
-                    <label class="label">QoS</label>
-                    <div class="select is-fullwidth">
-                      <select name="qos">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="tile is-child box is-shadowless">
-                    <label class="label">&nbsp;</label>
-                    <button class="button is-link is-fullwidth" name="subscribe_button">
-                      Subscribe
-                    </button>
-                  </div>
-                </div>
+          <div class="tile">
+            <div class="tile is-parent is-paddingless">
+              <div class="tile is-child box is-shadowless is-3">
+                <label class="label">Username</label>
+                <input class="input" type="text" name="username" />
               </div>
-
-              <div class="tile">
-                <div class="tile is-parent is-paddingless">
-                  <div class="tile is-child box is-shadowless">
-                    <table class="table is-hoverable is-fullwidth" id="topics_table">
-                      <thead>
-                        <tr>
-                          <th>Color</th>
-                          <th>Topic</th>
-                          <th class="has-text-centered">QoS</th>
-                          <th class="has-text-right"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+              <div class="tile is-child box is-shadowless is-2">
+                <label class="label">Password</label>
+                <input class="input" type="password" name="password" />
               </div>
-
+              <div class="tile is-child box is-shadowless is-2">
+                <label class="label">Keep Alive</label>
+                <input class="input" type="text" name="keep_alive" />
+              </div>
+              <div class="tile is-child box is-shadowless">
+                <label class="label">
+                  SSL
+                </label>
+                <input type="checkbox" name="ssl" />
+              </div>
+              <div class="tile is-child box is-shadowless">
+                <label class="label">
+                  Clean Session
+                </label>
+                <input type="checkbox" name="clean_session" />
+              </div>
+              <div class="tile is-child box is-shadowless is-2">
+                <label class="label">
+                  &nbsp;
+                </label>
+                <button class="button is-link" name="connect_button">
+                  Connect
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
 
-      <div class="card" id="card_messages">
-        <header class="card-header">
-          <p class="card-header-title">
-            Messages
-          </p>
-          <a href="#" class="card-header-icon" aria-label="more options">
-            <span class="icon">
-              <i class="fas fa-angle-down" aria-hidden="true"></i>
-            </span>
-          </a>
-        </header>
-
-        <div class="card-content">
-          <table class="table is-hoverable is-fullwidth" id="messages_table">
-            <thead>
-              <tr>
-                <th>&nbsp;</th>
-                <th>timestamp</th>
-                <th>Topic</th>
-                <th>Message</th>
-                <th class="has-text-centered">QoS</th>
-                <th class="has-text-right">Retained</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- <tr>
-                <td><span class="tag is-primary">&nbsp;</span></td>
-                <td>19/02/2018 15:53:08</td>
-                <td>the topic</td>
-                <td>the message</td>
-                <td class="has-text-centered">0</td>
-                <td class="has-text-right">Yes</td>
-              </tr> -->
-            </tbody>
-          </table>
         </div>
       </div>
+    </div>
+  </form>
+  <!-- form connection -->
 
-      <form id="publish_form">
-        <div class="card" id="card_publish">
-          <header class="card-header">
-            <p class="card-header-title">
-              Publish
-            </p>
-            <a href="#" class="card-header-icon" aria-label="more options">
-              <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </a>
-          </header>
+  <form id="subscriptions_form">
+    <div class="card" id="card_subscriptions">
+      <header class="card-header">
+        <p class="card-header-title">
+          Subscriptions
+        </p>
+        <a href="#" class="card-header-icon" aria-label="more options">
+          <span class="icon">
+            <i class="fas fa-angle-down" aria-hidden="true"></i>
+          </span>
+        </a>
+      </header>
 
-          <div class="card-content">
-            <div class="tile is-ancestor is-vertical">
-              <div class="tile">
-                <div class="tile is-parent is-paddingless">
-                  <div class="tile is-child box is-shadowless is-8">
-                    <label class="label">Topic</label>
-                    <input class="input" type="text" name="topic" placeholder="Topic" />
-                  </div>
-                  <div class="tile is-child box is-shadowless is-1">
-                    <label class="label">QoS</label>
-                    <div class="select is-fullwidth">
-                      <select name="qos">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="tile is-child box is-shadowless is-1">
-                    <label class="label">Retain</label>
-                    <input type="checkbox" name="retain" />
-                  </div>
-                  <div class="tile is-child box is-shadowless">
-                    <label class="label">&nbsp;</label>
-                    <button class="button is-link is-fullwidth" name="publish_button">
-                      Publish
-                    </button>
-                  </div>
+      <div class="card-content">
+        <div class="tile is-ancestor is-vertical">
+          <div class="tile">
+            <div class="tile is-parent is-paddingless">
+              <div class="tile is-child box is-shadowless is-8">
+                <label class="label">Topic</label>
+                <input class="input" type="text" name="topic" placeholder="Topic" />
+              </div>
+              <div class="tile is-child box is-shadowless is-2">
+                <label class="label">QoS</label>
+                <div class="select is-fullwidth">
+                  <select name="qos">
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                  </select>
                 </div>
               </div>
-              <div class="tile">
-                <div class="tile is-parent is-paddingless">
-                  <div class="tile is-child box is-shadowless">
-                    <label class="label">Message</label>
-                    <textarea class="textarea" name="message" placeholder="Message"></textarea>
-                  </div>
-                </div>
+              <div class="tile is-child box is-shadowless">
+                <label class="label">&nbsp;</label>
+                <button class="button is-link is-fullwidth" name="subscribe_button">
+                  Subscribe
+                </button>
               </div>
+            </div>
+          </div>
 
+          <div class="tile">
+            <div class="tile is-parent is-paddingless">
+              <div class="tile is-child box is-shadowless">
+                <table class="table is-hoverable is-fullwidth" id="topics_table">
+                  <thead>
+                    <tr>
+                      <th>Color</th>
+                      <th>Topic</th>
+                      <th class="has-text-centered">QoS</th>
+                      <th class="has-text-right"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="card" id="card_messages">
+    <header class="card-header">
+      <p class="card-header-title">
+        Messages
+      </p>
+      <a href="#" class="card-header-icon" aria-label="more options">
+        <span class="icon">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+      </a>
+    </header>
+
+    <div class="card-content">
+      <table class="table is-hoverable is-fullwidth" id="messages_table">
+        <thead>
+          <tr>
+            <th>&nbsp;</th>
+            <th>timestamp</th>
+            <th>Topic</th>
+            <th>Message</th>
+            <th class="has-text-centered">QoS</th>
+            <th class="has-text-right">Retained</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr>
+          <td><span class="tag is-primary">&nbsp;</span></td>
+          <td>19/02/2018 15:53:08</td>
+          <td>the topic</td>
+          <td>the message</td>
+          <td class="has-text-centered">0</td>
+          <td class="has-text-right">Yes</td>
+        </tr> -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<form id="publish_form">
+  <div class="card" id="card_publish">
+    <header class="card-header">
+      <p class="card-header-title">
+        Publish
+      </p>
+      <a href="#" class="card-header-icon" aria-label="more options">
+        <span class="icon">
+          <i class="fas fa-angle-down" aria-hidden="true"></i>
+        </span>
+      </a>
+    </header>
+
+    <div class="card-content">
+      <div class="tile is-ancestor is-vertical">
+        <div class="tile">
+          <div class="tile is-parent is-paddingless">
+            <div class="tile is-child box is-shadowless is-8">
+              <label class="label">Topic</label>
+              <input class="input" type="text" name="topic" placeholder="Topic" />
+            </div>
+            <div class="tile is-child box is-shadowless is-1">
+              <label class="label">QoS</label>
+              <div class="select is-fullwidth">
+                <select name="qos">
+                  <option>0</option>
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              </div>
+            </div>
+            <div class="tile is-child box is-shadowless is-1">
+              <label class="label">Retain</label>
+              <input type="checkbox" name="retain" />
+            </div>
+            <div class="tile is-child box is-shadowless">
+              <label class="label">&nbsp;</label>
+              <button class="button is-link is-fullwidth" name="publish_button">
+                Publish
+              </button>
             </div>
           </div>
         </div>
-      </form>
+        <div class="tile">
+          <div class="tile is-parent is-paddingless">
+            <div class="tile is-child box is-shadowless">
+              <label class="label">Message</label>
+              <textarea class="textarea" name="message" placeholder="Message"></textarea>
+            </div>
+          </div>
+        </div>
 
+      </div>
     </div>
   </div>
+</form>
+
+</div>
+</div>
+    </div>
+  </section>
+
 
   <section class="section">
     <div class="container">
