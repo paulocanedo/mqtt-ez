@@ -1,17 +1,51 @@
+const COLORS_AVAILABLE = [
+  '#000000', '#40E0D0', '#FFA07A', '#800080', '#708090', '#DDA0DD', '#FF8C00', '#8FBC8F', '#0000CD',
+  '#556B2F', '#00008B', '#696969', '#4B0082', '#FFE4B5', '#DAA520', '#A0522D', '#006400', '#FF4500'
+];
+
+let observer = (() => {
+  let observers = new Map();
+
+  let getHandlers = (what) => {
+    let collection = observers.get(what);
+    if(!collection) {
+      collection = [];
+      observers.set(what, collection);
+    }
+    return collection;
+  };
+
+  return {
+    subscribe(what, callback) {
+      let handlers = getHandlers(what);
+      handlers.push(callback);
+    },
+    publish(what, args) {
+      let handlers = getHandlers(what);
+      for(let handler of handlers) {
+        handler(args);
+      }
+    }
+  };
+})();
+
 let table_util = (() => {
   let createColumnColor = (args = {}) => {
     let column = document.createElement('td');
     let color_link = document.createElement('a');
-    let color = document.createElement('i');
+    let colorEl = document.createElement('i');
 
     color_link.title = "Choose a color";
-    color.classList.add('fas', 'fa-square', 'fa-lg');
+    colorEl.classList.add('fas', 'fa-square', 'fa-lg');
 
-    color_link.appendChild(color);
-    column.appendChild(color_link);
+    // color_link.appendChild(colorEl);
+    // column.appendChild(color_link);
+    column.appendChild(colorEl);
+    colorEl.style.color = args.color;
 
     return {
       setColor(color) {
+        colorEl.style.color = color;
       },
       root() {
         return column;
@@ -122,6 +156,7 @@ var ui_utils = (() => {
   const card_publish       = $('#card_publish');
 
   const connection_indicator = $('#connection_indicator');
+  const message_count_label  = $('#message_count_label');
 
   const connection_form = $('#connection_form');
   const connect_button = connection_form.connect_button;
@@ -174,9 +209,9 @@ var ui_utils = (() => {
 
     var subscribe_action = () => {
       let newLine = (color, topic, qos) => {
-        let cColor = table_util.createColumn(table_util.COLUMN_COLOR);
-        let cTopic = table_util.createColumn(table_util.COLUMN_TEXT, {text: topic});
-        let cQoS = table_util.createColumn(table_util.COLUMN_TEXT, {text: qos, alignment: 'has-text-centered'});
+        let cColor = table_util.createColumn(table_util.COLUMN_COLOR, {'color': color});
+        let cTopic = table_util.createColumn(table_util.COLUMN_TEXT, {'text': topic});
+        let cQoS = table_util.createColumn(table_util.COLUMN_TEXT, {'text': qos, 'alignment': 'has-text-centered'});
         let cControls = table_util.createColumn(table_util.COLUMN_CONTROLS);
 
         let line = document.createElement('tr');
@@ -187,7 +222,8 @@ var ui_utils = (() => {
       };
 
       let randomColor = () => {
-        return '#0000ff';
+        let value = Math.floor(Math.random() * COLORS_AVAILABLE.length);
+        return COLORS_AVAILABLE[value];
       };
 
       let color = randomColor();
@@ -218,16 +254,24 @@ var ui_utils = (() => {
         let timestamp = new Date();
         let line = newLine('#0000ff', timestamp, topic, message, `${packet.qos}`, packet.retain ? 'Yes' : 'No' );
         messages_table.tBodies[0].appendChild(line);
+
+        observer.publish('new_message', {'messagesUnreaded': ++messagesUnreaded});
       });
     };
 
     var publish_action = () => {
-      let topic   = publish_form.topic.value,
-          qos     = publish_form.qos.value,
-          retain  = publish_form.retain.checked ? true : false,
-          message = publish_form.message.value;
+      let topic    = publish_form.topic.value,
+          qos      = publish_form.qos.value,
+          retain   = publish_form.retain.checked ? true : false,
+          message  = publish_form.message.value,
+          callback = () => {
+            publish_button.classList.remove('is-loading');
+            publish_form.topic.value = '';
+            publish_form.message.value = '';
+          };
 
-      mqtt_adapter.publish(topic, qos, retain, message);
+      publish_button.classList.add('is-loading');
+      mqtt_adapter.publish(topic, qos, retain, message, callback);
     };
 
     var removeAllCards = () => {
@@ -248,6 +292,9 @@ var ui_utils = (() => {
     var linkCardMenu = (menu, card) => {
       menu.addEventListener('click', evt => setCurrentCard(card));
     };
+    menu_link_messages.addEventListener('click', evt => {
+      observer.publish('clearMessages');
+    });
 
     linkCardMenu(menu_link_connection, card_connection);
     linkCardMenu(menu_link_subscriptions, card_subscriptions);
@@ -259,6 +306,19 @@ var ui_utils = (() => {
     connect_button.addEventListener('click', connect_action);
     subscribe_button.addEventListener('click', subscribe_action);
     publish_button.addEventListener('click', publish_action);
+
+    observer.subscribe('new_message', args => {
+      let messagesUnreaded = args.messagesUnreaded;
+
+      message_count_label.textContent = messagesUnreaded;
+      message_count_label.classList.add('is-danger');
+    });
+
+    observer.subscribe('clearMessages', () => {
+      messagesUnreaded = 0;
+      message_count_label.textContent = messagesUnreaded;
+      message_count_label.classList.remove('is-danger');
+    });
 
     let $$ = query => document.querySelectorAll(query);
 
@@ -340,17 +400,15 @@ const mqtt_adapter = (() => {
       });
     },
     subscribe(topic) {
+      //verify if is connected
       client.subscribe(topic);
     },
-    publish(topic, qos, retain, message) {
+    publish(topic, qos, retain, message, callback) {
       qos = parseInt(qos);
       client.publish(topic, message, {
         'qos': qos,
         'retain': retain
-      },
-      () => {
-        console.log("published");
-      });
+      }, callback);
     },
     on(evt, callback) {
       client.on(evt, callback);
