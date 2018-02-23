@@ -22,6 +22,7 @@ const mqtt_adapter = (() => {
       client = mqtt.connect(`${url}`, {
         'keepalive': params.keepAlive,
         'clientId': params.clientId,
+        'port': params.port,
         'protocolVersion': 4,
         'clean': params.cleanSession,
         'reconnectPeriod': 1000,//milis
