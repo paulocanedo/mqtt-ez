@@ -4,6 +4,7 @@
   "description": "mqqt-ez",
   "main": "index.js",
   "scripts": {
+    "start": "react-scripts start",
     "build": "./node_modules/.bin/webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,7 +13,8 @@
   "dependencies": {
     "bulma": "^0.6.2",
     "font-awesome": "^4.7.0",
-    "mqtt": "^2.15.1"
+    "mqtt": "^2.15.1",
+    "object-hash": "^1.2.0"
   },
   "devDependencies": {
     "css-loader": "^0.28.9",

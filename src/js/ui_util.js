@@ -2,6 +2,12 @@ const observer     = require('./observer');
 const mqtt_adapter = require('./mqtt_adapter');
 const table_util   = require('./table_util');
 
+const connection_ctrl = (() => {
+  return {
+    
+  };
+})();
+
 const ui_util = (() => {
   const COLORS_AVAILABLE = [
     '#000000', '#40E0D0', '#FFA07A', '#800080', '#708090', '#DDA0DD', '#FF8C00', '#8FBC8F', '#0000CD',
@@ -13,19 +19,9 @@ const ui_util = (() => {
   let current_card = null;
   let messagesUnreaded = 0;
 
-  const menu_link_connection    = $('#menu_link_connection');
-  const menu_link_subscriptions = $('#menu_link_subscriptions');
-  const menu_link_messages      = $('#menu_link_messages');
-  const menu_link_publish       = $('#menu_link_publish');
-
-  const card_connection    = $('#card_connection');
-  const card_subscriptions = $('#card_subscriptions');
-  const card_messages      = $('#card_messages');
-  const card_publish       = $('#card_publish');
-
+  const menu_link_connection = $('#menu_link_connection');
+  const card_connection = $('#card_connection');
   const connection_indicator = $('#connection_indicator');
-  const message_count_label  = $('#message_count_label');
-
   const connection_form = $('#connection_form');
   const connect_button = connection_form.connect_button;
   const host_field = connection_form.host;
@@ -38,10 +34,21 @@ const ui_util = (() => {
   const ssl_field = connection_form.ssl;
   const cleanSession_field = connection_form.clean_session;
 
+  const menu_link_subscriptions = $('#menu_link_subscriptions');
+  const card_subscriptions = $('#card_subscriptions');
   const subscriptions_form = $('#subscriptions_form');
   const subscribe_button = subscriptions_form.subscribe_button;
-
   const topics_table = $('#topics_table');
+
+  const menu_link_messages      = $('#menu_link_messages');
+  const menu_link_publish       = $('#menu_link_publish');
+
+  const card_messages      = $('#card_messages');
+  const card_publish       = $('#card_publish');
+
+  const message_count_label  = $('#message_count_label');
+
+
   const messages_table = $('#messages_table');
 
   const publish_form = $('#publish_form');
