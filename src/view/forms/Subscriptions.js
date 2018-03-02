@@ -3,7 +3,7 @@ import ColorProvider  from '../../controller/ColorProvider';
 import ConnectionState from '../../ConnectionState'
 import ChangeType from '../../ChangeType'
 
-const mqtt_adapter = require('../../js/mqtt_adapter');
+const mqtt_adapter = require('../../controller/mqtt_adapter');
 const hash = require('object-hash');
 
 class Subscriptions extends React.Component {

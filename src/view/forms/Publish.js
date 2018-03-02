@@ -1,7 +1,7 @@
 import React  from 'react';
 import ConnectionState from '../../ConnectionState'
 
-const mqtt_adapter = require('../../js/mqtt_adapter');
+const mqtt_adapter = require('../../controller/mqtt_adapter');
 
 class Publish extends React.Component {
 

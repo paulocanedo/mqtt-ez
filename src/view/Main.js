@@ -27,13 +27,24 @@ class Main extends React.Component {
   }
 
   handleNewMessage(message) {
-    const messages = this.state.messages;
-    messages.push(message);
-    message.isNew = true;
+    //for some reason, message retained is fire before subscribe callback
+    setTimeout(() => {
+      const messages = this.state.messages;
+      const subscriptions = this.state.subscriptions;
 
-    this.setState(prevState => {
-      return {'unreadedMessages': prevState.unreadedMessages+1, 'messages': messages}
-    });
+      for(let sub of Object.values(subscriptions)) {
+        if(sub.topic === message.topic) {
+          message.color = sub.color;
+        }
+      }
+
+      messages.push(message);
+      message.isNew = true;
+
+      this.setState(prevState => {
+        return {'unreadedMessages': prevState.unreadedMessages+1, 'messages': messages}
+      });
+    }, 100);
   }
 
   handleSubscriptionChange(id, changeType, subscription) {

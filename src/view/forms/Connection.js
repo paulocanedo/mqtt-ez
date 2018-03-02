@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import ConnectionState from '../../ConnectionState'
 
-const mqtt_adapter = require('../../js/mqtt_adapter');
+const mqtt_adapter = require('../../controller/mqtt_adapter');
 
 class Connection extends Component {
 
@@ -129,6 +129,7 @@ class Connection extends Component {
                 <label className="label">Protocol</label>
                 <div className="select is-fullwidth">
                   <select name="protocol" value={this.state.protocol}
+                    disabled="true"
                     onChange={this.handleInputChange}>
                     <option value="mqtt">MQTT</option>
                     <option value="ws">Web Socket</option>
