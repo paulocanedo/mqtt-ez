@@ -57,13 +57,13 @@ class Publish extends React.Component {
         <div className="tile is-ancestor is-vertical">
           <div className="tile">
             <div className="tile is-parent is-paddingless">
-              <div className="tile is-child box is-shadowless is-8">
+              <div className="tile is-child box is-shadowless is-6">
                 <label className="label">Topic</label>
                 <input className="input" type="text" name="topic" placeholder="Topic"
                   value={this.state.topic}
                   onChange={this.handleInputChange} />
               </div>
-              <div className="tile is-child box is-shadowless is-1">
+              <div className="tile is-child box is-shadowless is-2">
                 <label className="label">QoS</label>
                 <div className="select is-fullwidth">
                   <select name="qos" value={this.state.qos} onChange={this.handleInputChange}>
@@ -73,11 +73,14 @@ class Publish extends React.Component {
                   </select>
                 </div>
               </div>
-              <div className="tile is-child box is-shadowless is-1">
+              <div className="tile is-child box is-shadowless is-2">
                 <label className="label">Retain</label>
-                <input type="checkbox" name="retain"
-                  checked={this.state.retain}
-                  onChange={this.handleInputChange} />
+                <div className="select is-fullwidth">
+                  <select name="retain" value={this.state.retain} onChange={this.handleInputChange}>
+                    <option value="true">YES</option>
+                    <option value="false">NO</option>
+                  </select>
+                </div>
               </div>
               <div className="tile is-child box is-shadowless">
                 <label className="label">&nbsp;</label>

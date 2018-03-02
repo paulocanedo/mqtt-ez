@@ -125,7 +125,7 @@ class Connection extends Component {
                   value={this.state.host}
                   onChange={this.handleInputChange} />
               </div>
-              <div className="tile is-child box is-shadowless is-2">
+              <div className="tile is-child box is-shadowless is-3">
                 <label className="label">Protocol</label>
                 <div className="select is-fullwidth">
                   <select name="protocol" value={this.state.protocol}
@@ -135,7 +135,7 @@ class Connection extends Component {
                   </select>
                 </div>
               </div>
-              <div className="tile is-child box is-shadowless is-2">
+              <div className="tile is-child box is-shadowless is-1">
                 <label className="label">Port</label>
                 <input className="input" type="text" name="port"
                   value={this.state.port}
@@ -152,7 +152,7 @@ class Connection extends Component {
 
           <div className="tile">
             <div className="tile is-parent is-paddingless">
-              <div className="tile is-child box is-shadowless is-3">
+              <div className="tile is-child box is-shadowless is-2">
                 <label className="label">Username</label>
                 <input className="input" type="text" name="username"
                   value={this.state.username}
@@ -170,27 +170,33 @@ class Connection extends Component {
                   value={this.state.keepAlive}
                   onChange={this.handleInputChange} />
               </div>
-              <div className="tile is-child box is-shadowless">
+              <div className="tile is-child box is-shadowless is-2">
                 <label className="label">
                   SSL
                 </label>
-                <input type="checkbox" name="ssl"
-                  checked={this.state.ssl}
-                  onChange={this.handleInputChange} />
+                <div className="select is-fullwidth">
+                  <select name="ssl" value={this.state.ssl} onChange={this.handleInputChange}>
+                    <option value="true">YES</option>
+                    <option value="false">NO</option>
+                  </select>
+                </div>
               </div>
-              <div className="tile is-child box is-shadowless">
+              <div className="tile is-child box is-shadowless is-2">
                 <label className="label">
                   Clean Session
                 </label>
-                <input type="checkbox" name="cleanSession"
-                  checked={this.state.cleanSession}
-                  onChange={this.handleInputChange} />
+                <div className="select is-fullwidth">
+                  <select name="cleanSession" value={this.state.cleanSession} onChange={this.handleInputChange}>
+                    <option value="true">YES</option>
+                    <option value="false">NO</option>
+                  </select>
+                </div>
               </div>
               <div className="tile is-child box is-shadowless is-2">
                 <label className="label">
                   &nbsp;
                 </label>
-                <button className={"button is-link " + extraClassesNames}
+                <button className={"button is-fullwidth is-link " + extraClassesNames}
                   onClick={this.handleConnectionClick}>
                   {!isConnected ? 'Connect' : 'Disconnect'}
                 </button>
