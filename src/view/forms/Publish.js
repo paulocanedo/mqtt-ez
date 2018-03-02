@@ -59,12 +59,14 @@ class Publish extends React.Component {
             <div className="tile is-parent is-paddingless">
               <div className="tile is-child box is-shadowless is-8">
                 <label className="label">Topic</label>
-                <input className="input" type="text" name="topic" placeholder="Topic" />
+                <input className="input" type="text" name="topic" placeholder="Topic"
+                  value={this.state.topic}
+                  onChange={this.handleInputChange} />
               </div>
               <div className="tile is-child box is-shadowless is-1">
                 <label className="label">QoS</label>
                 <div className="select is-fullwidth">
-                  <select name="qos">
+                  <select name="qos" value={this.state.qos} onChange={this.handleInputChange}>
                     <option>0</option>
                     <option>1</option>
                     <option>2</option>
@@ -73,11 +75,15 @@ class Publish extends React.Component {
               </div>
               <div className="tile is-child box is-shadowless is-1">
                 <label className="label">Retain</label>
-                <input type="checkbox" name="retain" />
+                <input type="checkbox" name="retain"
+                  checked={this.state.retain}
+                  onChange={this.handleInputChange} />
               </div>
               <div className="tile is-child box is-shadowless">
                 <label className="label">&nbsp;</label>
-                <button className="button is-link is-fullwidth" name="publish_button">
+                <button className="button is-link is-fullwidth"
+                  onClick={this.handleConfirmClick}
+                  disabled={!this.canSubmit()}>
                   Publish
                 </button>
               </div>
@@ -87,7 +93,9 @@ class Publish extends React.Component {
             <div className="tile is-parent is-paddingless">
               <div className="tile is-child box is-shadowless">
                 <label className="label">Message</label>
-                <textarea className="textarea" name="message" placeholder="Message"></textarea>
+                <textarea className="textarea" name="message" placeholder="Message"
+                  value={this.state.message}
+                  onChange={this.handleInputChange}></textarea>
               </div>
             </div>
           </div>
