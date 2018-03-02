@@ -11,7 +11,7 @@ class Messages extends React.Component {
     const topic = props.message.topic;
     const message = props.message.content;
     const qos = props.message.qos;
-    const retained = props.message.retain;
+    const retained = props.message.retain ? 'YES' : 'NO';
 
     return (
       <tr style={{borderLeft: 'solid ' + color + ' 5px'}}>
