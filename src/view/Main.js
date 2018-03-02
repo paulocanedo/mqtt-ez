@@ -8,6 +8,7 @@ import ChangeType from '../ChangeType'
 const features = require('./features');
 
 class Main extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -55,7 +56,10 @@ class Main extends React.Component {
   }
 
   handleConnectionChange(newConnectionState) {
-    this.setState({connectionState: newConnectionState});
+    if(newConnectionState === ConnectionState.DISCONNECTED) {
+      this.setState({'subscriptions': {}, 'messages': [], 'unreadedMessages': 0});
+    }
+    this.setState({'connectionState': newConnectionState});
   }
 
   handleFeatureChange(newFeature) {
