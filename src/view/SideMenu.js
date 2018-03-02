@@ -19,9 +19,11 @@ class SideMenu extends Component {
     const currentFeature = this.props.currentFeature;
 
     const menuItems = Object.entries(features).map(([feature_id, feature]) =>
-    <SideMenuItem text={feature.title}
+    <SideMenuItem
        key={feature_id}
        feature={feature}
+       connectionState={this.props.connectionState}
+       unreadedMessages={this.props.unreadedMessages}
        onFeatureChange={this.onFeatureChange}
        isActive={feature.id === currentFeature.id} />
     );

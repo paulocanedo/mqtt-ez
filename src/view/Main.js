@@ -14,6 +14,7 @@ class Main extends React.Component {
     this.state = {
       currentFeature: features.initial,
       connectionState: ConnectionState.DISCONNECTED,
+      unreadedMessages: 0,
       subscriptions: {},
       messages: []
     };
@@ -25,11 +26,12 @@ class Main extends React.Component {
   }
 
   handleNewMessage(message) {
-    this.setState((prevState, props) => {
-      let messages = prevState.messages;
-      messages.push(message);
+    const messages = this.state.messages;
+    messages.push(message);
+    message.isNew = true;
 
-      return {messages: messages};
+    this.setState(prevState => {
+      return {'unreadedMessages': prevState.unreadedMessages+1, 'messages': messages}
     });
   }
 
@@ -68,6 +70,8 @@ class Main extends React.Component {
             <div className="column is-one-quarter">
               <SideMenu currentFeature={this.state.currentFeature}
                 features={features}
+                connectionState={this.state.connectionState}
+                unreadedMessages={this.state.unreadedMessages}
                 onFeatureChange={this.handleFeatureChange} />
             </div>
             <div className="column">
