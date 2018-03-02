@@ -3,6 +3,7 @@ import React from 'react';
 import SideMenu from './SideMenu';
 import Card from './Card';
 import ConnectionState from '../ConnectionState'
+import ChangeType from '../ChangeType'
 
 const features = require('./features');
 
@@ -13,12 +14,14 @@ class Main extends React.Component {
     this.state = {
       currentFeature: features.initial,
       connectionState: ConnectionState.DISCONNECTED,
+      subscriptions: {},
       messages: []
     };
 
     this.handleFeatureChange = this.handleFeatureChange.bind(this);
     this.handleConnectionChange = this.handleConnectionChange.bind(this);
     this.handleNewMessage = this.handleNewMessage.bind(this);
+    this.handleSubscriptionChange = this.handleSubscriptionChange.bind(this);
   }
 
   handleNewMessage(message) {
@@ -28,6 +31,25 @@ class Main extends React.Component {
 
       return {messages: messages};
     });
+  }
+
+  handleSubscriptionChange(id, changeType, subscription) {
+    const subscriptions = this.state.subscriptions;
+
+    switch (changeType) {
+      case ChangeType.INSERT:
+        subscriptions[id] = subscription;
+        break;
+      case ChangeType.UPDATE:
+
+        break;
+      case ChangeType.DELETE:
+        delete subscriptions[id];
+        break;
+      default:
+        throw Error('unexpected change type' + changeType);
+    }
+    this.setState({'subscriptions': subscriptions});
   }
 
   handleConnectionChange(newConnectionState) {
@@ -51,8 +73,10 @@ class Main extends React.Component {
             <div className="column">
               <Card currentFeature={this.state.currentFeature}
                 connectionState={this.state.connectionState}
+                subscriptions={this.state.subscriptions}
                 messages={this.state.messages}
                 onConnectionChange={this.handleConnectionChange}
+                onSubscriptionChange={this.handleSubscriptionChange}
                 onNewMessage={this.handleNewMessage}
                 onFeatureChange={this.handleFeatureChange} />
             </div>

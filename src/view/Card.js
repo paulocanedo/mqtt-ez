@@ -37,7 +37,9 @@ class FormBuilder {
           onConnectionChange={props.onConnectionChange} />;
       }
       case 1: {
-        return <Subscriptions connectionState={props.connectionState} />
+        return <Subscriptions connectionState={props.connectionState}
+          subscriptions={props.subscriptions}
+          onSubscriptionChange={props.onSubscriptionChange} />
       }
       case 2: {
         return <Messages connectionState={props.connectionState} messages={props.messages} />

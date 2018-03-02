@@ -1,6 +1,7 @@
 import React  from 'react';
 import ColorProvider  from '../../controller/ColorProvider';
 import ConnectionState from '../../ConnectionState'
+import ChangeType from '../../ChangeType'
 
 const mqtt_adapter = require('../../js/mqtt_adapter');
 const hash = require('object-hash');
@@ -11,8 +12,7 @@ class Subscriptions extends React.Component {
     super(props);
     this.state = {
       topic: '',
-      qos: 0,
-      subscriptions: {}
+      qos: 0
     };
 
     this.handleConfirmClick = this.handleConfirmClick.bind(this);
@@ -21,21 +21,17 @@ class Subscriptions extends React.Component {
   }
 
   canSubmit() {
-    const subscriptions = this.state.subscriptions;
+    const subscriptions = this.props.subscriptions;
     const topic = this.state.topic;
-    const key = hash.MD5(topic);
+    const id = hash.MD5(topic);
 
     return (this.props.connectionState === ConnectionState.CONNECTED) &&
-           (Object.keys(subscriptions).indexOf(key) === -1) &&
+           (Object.keys(subscriptions).indexOf(id) < 0) &&
            (topic.length > 0);
   }
 
-  handleTrashClick(key, evt) {
-    const subscriptions = this.state.subscriptions;
-    mqtt_adapter.unsubscribe(subscriptions[key].topic, () => {
-      delete subscriptions[key];
-      this.setState({'subscriptions': subscriptions});
-    });
+  handleTrashClick(id, evt) {
+    this.props.onSubscriptionChange(id, ChangeType.DELETE);
   }
 
   handleConfirmClick(evt) {
@@ -49,20 +45,18 @@ class Subscriptions extends React.Component {
         return;
       }
 
-      let md5Topic = hash.MD5(topic);
-      let color = ColorProvider.nextRandomColor();
+      const id = hash.MD5(topic);
+      const color = ColorProvider.nextRandomColor();
 
-      let sub = {
-        key: md5Topic,
+      const sub = {
+        id: id,
         color: color,
         topic: topic,
         qos: qos
       };
 
-      let subscriptions = this.state.subscriptions;
-      subscriptions[md5Topic] = sub;
+      this.props.onSubscriptionChange(id, ChangeType.INSERT, sub);
       this.setState({
-        'subscriptions': subscriptions,
         'topic': ''
       });
     });
@@ -77,7 +71,7 @@ class Subscriptions extends React.Component {
   }
 
   SubscriptionRow(props) {
-      const id = props.sub.key;
+      const id = props.sub.id;
       const color = props.sub.color;
       const topic = props.sub.topic;
       const qos = props.sub.qos;
@@ -102,11 +96,13 @@ class Subscriptions extends React.Component {
 
   render() {
     const SubscriptionRow = this.SubscriptionRow.bind(this);
-    const subKeys = Object.keys(this.state.subscriptions);
+
+    const subscriptions = this.props.subscriptions;
+    const subKeys = Object.keys(subscriptions);
     const rows = subKeys.map(key => {
-        let sub = this.state.subscriptions[key];
+        let sub = subscriptions[key];
         return (
-          <SubscriptionRow key={sub.key} sub={sub} />
+          <SubscriptionRow key={sub.id} sub={sub} />
         );
       }
     );
