@@ -5,23 +5,26 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "build": "./node_modules/.bin/webpack",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Paulo Canedo",
   "license": "ISC",
   "dependencies": {
-    "bulma": "^0.6.2",
-    "font-awesome": "^4.7.0",
     "mqtt": "^2.15.1",
-    "object-hash": "^1.2.0"
+    "object-hash": "^1.2.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.1.1"
   },
-  "devDependencies": {
-    "css-loader": "^0.28.9",
-    "gulp": "^3.9.1",
-    "gulp-connect": "^5.2.0",
-    "gulp-debug": "^3.2.0",
-    "style-loader": "^0.20.2",
-    "webpack": "^3.11.0"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulocanedo/mqtt-ez.git"
+  },
+  "bugs": {
+    "url": "https://github.com/paulocanedo/mqtt-ez/issues"
+  },
+  "homepage": "https://paulocanedo.github.io/mqtt-ez"
 }
