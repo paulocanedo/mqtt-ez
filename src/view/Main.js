@@ -1,14 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import SideMenu from './SideMenu';
-import Card from './Card';
-import ConnectionState from '../ConnectionState'
-import ChangeType from '../ChangeType'
+import SideMenu from "./SideMenu";
+import Card from "./Card";
+import ConnectionState from "../ConnectionState";
+import ChangeType from "../ChangeType";
 
-const features = require('./features');
+const features = require("./features");
 
 class Main extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -32,8 +31,8 @@ class Main extends React.Component {
       const messages = this.state.messages;
       const subscriptions = this.state.subscriptions;
 
-      for(let sub of Object.values(subscriptions)) {
-        if(sub.topic === message.topic) {
+      for (let sub of Object.values(subscriptions)) {
+        if (sub.topic === message.topic) {
           message.color = sub.color;
         }
       }
@@ -42,7 +41,10 @@ class Main extends React.Component {
       message.isNew = true;
 
       this.setState(prevState => {
-        return {'unreadedMessages': prevState.unreadedMessages+1, 'messages': messages}
+        return {
+          unreadedMessages: prevState.unreadedMessages + 1,
+          messages: messages
+        };
       });
     }, 100);
   }
@@ -55,26 +57,25 @@ class Main extends React.Component {
         subscriptions[id] = subscription;
         break;
       case ChangeType.UPDATE:
-
         break;
       case ChangeType.DELETE:
         delete subscriptions[id];
         break;
       default:
-        throw Error('unexpected change type' + changeType);
+        throw Error("unexpected change type" + changeType);
     }
-    this.setState({'subscriptions': subscriptions});
+    this.setState({ subscriptions: subscriptions });
   }
 
   handleConnectionChange(newConnectionState) {
-    if(newConnectionState === ConnectionState.DISCONNECTED) {
-      this.setState({'subscriptions': {}, 'messages': [], 'unreadedMessages': 0});
+    if (newConnectionState === ConnectionState.DISCONNECTED) {
+      this.setState({ subscriptions: {}, messages: [], unreadedMessages: 0 });
     }
-    this.setState({'connectionState': newConnectionState});
+    this.setState({ connectionState: newConnectionState });
   }
 
   handleFeatureChange(newFeature) {
-    this.setState({currentFeature: newFeature});
+    this.setState({ currentFeature: newFeature });
   }
 
   render() {
@@ -83,21 +84,25 @@ class Main extends React.Component {
         <div className="container">
           <div className="columns">
             <div className="column is-one-quarter">
-              <SideMenu currentFeature={this.state.currentFeature}
+              <SideMenu
+                currentFeature={this.state.currentFeature}
                 features={features}
                 connectionState={this.state.connectionState}
                 unreadedMessages={this.state.unreadedMessages}
-                onFeatureChange={this.handleFeatureChange} />
+                onFeatureChange={this.handleFeatureChange}
+              />
             </div>
             <div className="column">
-              <Card currentFeature={this.state.currentFeature}
+              <Card
+                currentFeature={this.state.currentFeature}
                 connectionState={this.state.connectionState}
                 subscriptions={this.state.subscriptions}
                 messages={this.state.messages}
                 onConnectionChange={this.handleConnectionChange}
                 onSubscriptionChange={this.handleSubscriptionChange}
                 onNewMessage={this.handleNewMessage}
-                onFeatureChange={this.handleFeatureChange} />
+                onFeatureChange={this.handleFeatureChange}
+              />
             </div>
           </div>
         </div>

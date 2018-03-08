@@ -1,37 +1,41 @@
-const mqtt = require('mqtt');
+const mqtt = require("mqtt");
 
 const mqtt_adapter = (() => {
-  let clientId = 'mqtt-ez_' + Math.random().toString(16).substr(2, 8);
+  let clientId =
+    "mqtt-ez_" +
+    Math.random()
+      .toString(16)
+      .substr(2, 8);
   let client = null;
 
   return {
     getDefaultParams() {
       return {
-        'host': 'localhost',
-        'protocol': 'ws',
-        'port': 80,
-        'clientId': clientId,
-        'keepAlive': 60,
-        'ssl': false,
-        'cleanSession': true
+        host: "localhost",
+        protocol: "ws",
+        port: 80,
+        clientId: clientId,
+        keepAlive: 60,
+        ssl: false,
+        cleanSession: true
       };
     },
     connect(params) {
-      let url = params.protocol + (params.ssl ? 's' : '') + '://' + params.host;
+      let url = params.protocol + (params.ssl ? "s" : "") + "://" + params.host;
 
       client = mqtt.connect(`${url}`, {
-        'wsOptions': {},
-        'reschedulePings': true,
-        'keepalive': params.keepAlive,
-        'clientId': params.clientId,
-        'port': params.port,
+        wsOptions: {},
+        reschedulePings: true,
+        keepalive: params.keepAlive,
+        clientId: params.clientId,
+        port: params.port,
         // 'protocolId': params.protocol,
         // 'protocolVersion': 4,
-        'clean': params.cleanSession,
-        'reconnectPeriod': 1000,//milis
-        'connectTimeout': 3 * 1000,
-        'username': params.username,
-        'password': params.password
+        clean: params.cleanSession,
+        reconnectPeriod: 1000, //milis
+        connectTimeout: 3 * 1000,
+        username: params.username,
+        password: params.password
         // queueQoSZero: true,
         // incomingStore: a Store for the incoming packets
         // outgoingStore: a Store for the outgoing packets
@@ -49,7 +53,7 @@ const mqtt_adapter = (() => {
     },
     subscribe(topic, qos, callback) {
       //verify if is connected
-      client.subscribe(topic, {'qos': qos}, callback);
+      client.subscribe(topic, { qos: qos }, callback);
     },
     unsubscribe(topic, callback) {
       //verify if is connected
@@ -57,10 +61,15 @@ const mqtt_adapter = (() => {
     },
     publish(topic, qos, retain, message, callback) {
       qos = parseInt(qos, 10);
-      client.publish(topic, message, {
-        'qos': qos,
-        'retain': retain
-      }, callback);
+      client.publish(
+        topic,
+        message,
+        {
+          qos: qos,
+          retain: retain
+        },
+        callback
+      );
     },
     on(evt, callback) {
       client.on(evt, callback);

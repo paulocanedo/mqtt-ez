@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import SideMenuItem from './SideMenuItem'
+import SideMenuItem from "./SideMenuItem";
 
 class SideMenu extends Component {
-
   constructor(props) {
     super(props);
 
@@ -18,20 +17,21 @@ class SideMenu extends Component {
     const features = this.props.features.list;
     const currentFeature = this.props.currentFeature;
 
-    const menuItems = Object.entries(features).map(([feature_id, feature]) =>
-    <SideMenuItem
-       key={feature_id}
-       feature={feature}
-       connectionState={this.props.connectionState}
-       unreadedMessages={this.props.unreadedMessages}
-       onFeatureChange={this.onFeatureChange}
-       isActive={feature.id === currentFeature.id} />
-    );
+    const menuItems = Object.entries(features).map(([feature_id, feature]) => (
+      <SideMenuItem
+        key={feature_id}
+        feature={feature}
+        connectionState={this.props.connectionState}
+        unreadedMessages={this.props.unreadedMessages}
+        onFeatureChange={this.onFeatureChange}
+        isActive={feature.id === currentFeature.id}
+      />
+    ));
 
     return (
       <nav className="panel">
         <p className="panel-heading">MQTT-EZ</p>
-        { menuItems }
+        {menuItems}
       </nav>
     );
   }

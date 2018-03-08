@@ -1,9 +1,8 @@
-import React  from 'react';
+import React from "react";
 
-const hash = require('object-hash');
+const hash = require("object-hash");
 
 class Messages extends React.Component {
-
   MessageRow(props) {
     // const id = props.sub.key;
     const color = props.message.color;
@@ -11,10 +10,10 @@ class Messages extends React.Component {
     const topic = props.message.topic;
     const message = props.message.content;
     const qos = props.message.qos;
-    const retained = props.message.retain ? 'YES' : 'NO';
+    const retained = props.message.retain ? "YES" : "NO";
 
     return (
-      <tr style={{borderLeft: 'solid ' + color + ' 5px'}}>
+      <tr style={{ borderLeft: "solid " + color + " 5px" }}>
         <td>{timestamp}</td>
         <td>{topic}</td>
         <td>{message}</td>
@@ -29,10 +28,8 @@ class Messages extends React.Component {
     const messages = this.props.messages;
 
     const rows = messages.map(elem => {
-      let key = hash.MD5('' + elem.timestamp.getTime + elem.content);
-      return (
-        <MessageRow key={key} message={elem} />
-      );
+      let key = hash.MD5("" + elem.timestamp.getTime + elem.content);
+      return <MessageRow key={key} message={elem} />;
     });
 
     return (
@@ -47,9 +44,7 @@ class Messages extends React.Component {
               <th className="has-text-right">Retained</th>
             </tr>
           </thead>
-          <tbody>
-            {rows}
-          </tbody>
+          <tbody>{rows}</tbody>
         </table>
       </div>
     );

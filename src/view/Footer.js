@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Footer extends Component {
   render() {
@@ -7,9 +7,10 @@ class Footer extends Component {
         <div className="container">
           <div className="content has-text-centered">
             <p>
-              <strong>MQTT-EZ</strong> by <a href="http://paulocanedo.com">Paulo Canedo</a>.
-              The source code is
-              licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+              <strong>MQTT-EZ</strong> by{" "}
+              <a href="http://paulocanedo.com">Paulo Canedo</a>. The source code
+              is licensed{" "}
+              <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
             </p>
           </div>
         </div>

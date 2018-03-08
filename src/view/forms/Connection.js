@@ -1,20 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import ConnectionState from '../../ConnectionState'
+import ConnectionState from "../../ConnectionState";
 
-const mqtt_adapter = require('../../controller/mqtt_adapter');
+const mqtt_adapter = require("../../controller/mqtt_adapter");
 
 class Connection extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      clientId: 'mqtt-ez_' + Math.random().toString(16).substr(2, 8),
-      host: 'localhost',
-      protocol: 'ws',
-      port: 80,
+      clientId:
+        "mqtt-ez_" +
+        Math.random()
+          .toString(16)
+          .substr(2, 8),
+      host: "iot.eclipse.org/ws",
+      protocol: "ws",
+      port: 443,
       keepAlive: 60,
-      ssl: false,
+      ssl: true,
       cleanSession: true
     };
 
@@ -50,11 +53,11 @@ class Connection extends Component {
       // resubscribe : if connection is broken and reconnects, subscribed topics are automatically subscribed again (default true)
     });
 
-    mqtt_adapter.on('connect', connack => {
+    mqtt_adapter.on("connect", connack => {
       this.props.onConnectionChange(ConnectionState.CONNECTED);
     });
 
-    mqtt_adapter.on('message', (topic, content, packet) => {
+    mqtt_adapter.on("message", (topic, content, packet) => {
       const message = {
         topic: topic,
         timestamp: new Date(),
@@ -63,12 +66,12 @@ class Connection extends Component {
         retain: packet.retain
       };
       this.props.onNewMessage(message);
-    })
+    });
   }
 
   doDisconnect() {
     mqtt_adapter.end();
-    mqtt_adapter.on('close', connack => {
+    mqtt_adapter.on("close", connack => {
       this.props.onConnectionChange(ConnectionState.DISCONNECTED);
     });
   }
@@ -89,123 +92,155 @@ class Connection extends Component {
         break;
       }
       default: {
-        throw Error('unexpected connection state');
+        throw Error("unexpected connection state");
       }
     }
   }
 
   handleInputChange(evt) {
     const target = evt.target;
-    const value  = target.type === 'checkbox' ? target.checked : target.value;
-    const name   = target.name;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
 
-    this.setState({[name]: value});
+    this.setState({ [name]: value });
   }
 
   render() {
     let isConnected = this.props.connectionState === ConnectionState.CONNECTED;
-    let isConnecting = this.props.connectionState === ConnectionState.CONNECTING;
+    let isConnecting =
+      this.props.connectionState === ConnectionState.CONNECTING;
 
-    let extraClassesNames = '';
-    if(isConnected) {
-      extraClassesNames = 'is-danger';
-    } else if(isConnecting) {
-      extraClassesNames = 'is-loading';
+    let extraClassesNames = "";
+    if (isConnected) {
+      extraClassesNames = "is-danger";
+    } else if (isConnecting) {
+      extraClassesNames = "is-loading";
     }
 
     return (
       <div className="card-content">
         <div className="tile is-ancestor is-vertical">
           <form>
-          <div className="tile">
-            <div className="tile is-parent is-paddingless">
-              <div className="tile is-child box is-shadowless is-5">
-                <label className="label">Host</label>
-                <input className="input" type="text" name="host"
-                  value={this.state.host}
-                  onChange={this.handleInputChange} />
-              </div>
-              <div className="tile is-child box is-shadowless is-3">
-                <label className="label">Protocol</label>
-                <div className="select is-fullwidth">
-                  <select name="protocol" value={this.state.protocol}
-                    disabled="true"
-                    onChange={this.handleInputChange}>
-                    <option value="mqtt">MQTT</option>
-                    <option value="ws">Web Socket</option>
-                  </select>
+            <div className="tile">
+              <div className="tile is-parent is-paddingless">
+                <div className="tile is-child box is-shadowless is-5">
+                  <label className="label">Host</label>
+                  <input
+                    className="input"
+                    type="text"
+                    name="host"
+                    value={this.state.host}
+                    onChange={this.handleInputChange}
+                  />
                 </div>
-              </div>
-              <div className="tile is-child box is-shadowless is-1">
-                <label className="label">Port</label>
-                <input className="input" type="text" name="port"
-                  value={this.state.port}
-                  onChange={this.handleInputChange} />
-              </div>
-              <div className="tile is-child box is-shadowless">
-                <label className="label">Client ID</label>
-                <input className="input" type="text"
-                  value={this.state.clientId}
-                  onChange={this.handleInputChange} />
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">Protocol</label>
+                  <div className="select is-fullwidth">
+                    <select
+                      name="protocol"
+                      value={this.state.protocol}
+                      disabled="true"
+                      onChange={this.handleInputChange}
+                    >
+                      <option value="mqtt">MQTT</option>
+                      <option value="ws">Web Socket</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">Port</label>
+                  <input
+                    className="input"
+                    type="text"
+                    name="port"
+                    value={this.state.port}
+                    onChange={this.handleInputChange}
+                  />
+                </div>
+                <div className="tile is-child box is-shadowless">
+                  <label className="label">Client ID</label>
+                  <input
+                    className="input"
+                    type="text"
+                    value={this.state.clientId}
+                    onChange={this.handleInputChange}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="tile">
-            <div className="tile is-parent is-paddingless">
-              <div className="tile is-child box is-shadowless is-2">
-                <label className="label">Username</label>
-                <input className="input" type="text" name="username"
-                  value={this.state.username}
-                  onChange={this.handleInputChange} />
-              </div>
-              <div className="tile is-child box is-shadowless is-2">
-                <label className="label">Password</label>
-                <input className="input" type="password" name="password"
-                  value={this.state.password}
-                  onChange={this.handleInputChange} />
-              </div>
-              <div className="tile is-child box is-shadowless is-2">
-                <label className="label">Keep Alive</label>
-                <input className="input" type="text" name="keepAlive"
-                  value={this.state.keepAlive}
-                  onChange={this.handleInputChange} />
-              </div>
-              <div className="tile is-child box is-shadowless is-2">
-                <label className="label">
-                  SSL
-                </label>
-                <div className="select is-fullwidth">
-                  <select name="ssl" value={this.state.ssl} onChange={this.handleInputChange}>
-                    <option value="true">YES</option>
-                    <option value="false">NO</option>
-                  </select>
+            <div className="tile">
+              <div className="tile is-parent is-paddingless">
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">Username</label>
+                  <input
+                    className="input"
+                    type="text"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.handleInputChange}
+                  />
                 </div>
-              </div>
-              <div className="tile is-child box is-shadowless is-2">
-                <label className="label">
-                  Clean Session
-                </label>
-                <div className="select is-fullwidth">
-                  <select name="cleanSession" value={this.state.cleanSession} onChange={this.handleInputChange}>
-                    <option value="true">YES</option>
-                    <option value="false">NO</option>
-                  </select>
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">Password</label>
+                  <input
+                    className="input"
+                    type="password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.handleInputChange}
+                  />
                 </div>
-              </div>
-              <div className="tile is-child box is-shadowless is-2">
-                <label className="label">
-                  &nbsp;
-                </label>
-                <button className={"button is-fullwidth is-link " + extraClassesNames}
-                  onClick={this.handleConnectionClick}>
-                  {!isConnected ? 'Connect' : 'Disconnect'}
-                </button>
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">Keep Alive</label>
+                  <input
+                    className="input"
+                    type="text"
+                    name="keepAlive"
+                    value={this.state.keepAlive}
+                    onChange={this.handleInputChange}
+                  />
+                </div>
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">SSL</label>
+                  <div className="select is-fullwidth">
+                    <select
+                      name="ssl"
+                      value={this.state.ssl}
+                      onChange={this.handleInputChange}
+                    >
+                      <option value="true">YES</option>
+                      <option value="false">NO</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">Clean Session</label>
+                  <div className="select is-fullwidth">
+                    <select
+                      name="cleanSession"
+                      value={this.state.cleanSession}
+                      onChange={this.handleInputChange}
+                    >
+                      <option value="true">YES</option>
+                      <option value="false">NO</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="tile is-child box is-shadowless is-2">
+                  <label className="label">&nbsp;</label>
+                  <button
+                    className={
+                      "button is-fullwidth is-link " + extraClassesNames
+                    }
+                    onClick={this.handleConnectionClick}
+                  >
+                    {!isConnected ? "Connect" : "Disconnect"}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-
-        </form>
+          </form>
         </div>
       </div>
     );

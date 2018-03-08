@@ -1,17 +1,16 @@
-import React  from 'react';
-import ConnectionState from '../../ConnectionState'
+import React from "react";
+import ConnectionState from "../../ConnectionState";
 
-const mqtt_adapter = require('../../controller/mqtt_adapter');
+const mqtt_adapter = require("../../controller/mqtt_adapter");
 
 class Publish extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      topic: '',
+      topic: "",
       qos: 0,
       retain: false,
-      message: ''
+      message: ""
     };
 
     this.handleConfirmClick = this.handleConfirmClick.bind(this);
@@ -22,33 +21,35 @@ class Publish extends React.Component {
     const message = this.state.message;
     const topic = this.state.topic;
 
-    return (this.props.connectionState === ConnectionState.CONNECTED) &&
-           (message.length > 0) &&
-           (topic.length > 0);
+    return (
+      this.props.connectionState === ConnectionState.CONNECTED &&
+      message.length > 0 &&
+      topic.length > 0
+    );
   }
 
   handleConfirmClick(evt) {
     evt.preventDefault();
 
-    const topic   = this.state.topic;
-    const qos     = this.state.qos;
-    const retain  = this.state.retain;
+    const topic = this.state.topic;
+    const qos = this.state.qos;
+    const retain = this.state.retain;
     const message = this.state.message;
 
     mqtt_adapter.publish(topic, qos, retain, message, () => {
       this.setState({
-        'topic': '',
-        'message': ''
+        topic: "",
+        message: ""
       });
     });
   }
 
   handleInputChange(evt) {
     const target = evt.target;
-    const value  = target.type === 'checkbox' ? target.checked : target.value;
-    const name   = target.name;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
 
-    this.setState({[name]: value});
+    this.setState({ [name]: value });
   }
 
   render() {
@@ -59,14 +60,23 @@ class Publish extends React.Component {
             <div className="tile is-parent is-paddingless">
               <div className="tile is-child box is-shadowless is-6">
                 <label className="label">Topic</label>
-                <input className="input" type="text" name="topic" placeholder="Topic"
+                <input
+                  className="input"
+                  type="text"
+                  name="topic"
+                  placeholder="Topic"
                   value={this.state.topic}
-                  onChange={this.handleInputChange} />
+                  onChange={this.handleInputChange}
+                />
               </div>
               <div className="tile is-child box is-shadowless is-2">
                 <label className="label">QoS</label>
                 <div className="select is-fullwidth">
-                  <select name="qos" value={this.state.qos} onChange={this.handleInputChange}>
+                  <select
+                    name="qos"
+                    value={this.state.qos}
+                    onChange={this.handleInputChange}
+                  >
                     <option>0</option>
                     <option>1</option>
                     <option>2</option>
@@ -76,7 +86,11 @@ class Publish extends React.Component {
               <div className="tile is-child box is-shadowless is-2">
                 <label className="label">Retain</label>
                 <div className="select is-fullwidth">
-                  <select name="retain" value={this.state.retain} onChange={this.handleInputChange}>
+                  <select
+                    name="retain"
+                    value={this.state.retain}
+                    onChange={this.handleInputChange}
+                  >
                     <option value="true">YES</option>
                     <option value="false">NO</option>
                   </select>
@@ -84,9 +98,11 @@ class Publish extends React.Component {
               </div>
               <div className="tile is-child box is-shadowless">
                 <label className="label">&nbsp;</label>
-                <button className="button is-link is-fullwidth"
+                <button
+                  className="button is-link is-fullwidth"
                   onClick={this.handleConfirmClick}
-                  disabled={!this.canSubmit()}>
+                  disabled={!this.canSubmit()}
+                >
                   Publish
                 </button>
               </div>
@@ -96,13 +112,16 @@ class Publish extends React.Component {
             <div className="tile is-parent is-paddingless">
               <div className="tile is-child box is-shadowless">
                 <label className="label">Message</label>
-                <textarea className="textarea" name="message" placeholder="Message"
+                <textarea
+                  className="textarea"
+                  name="message"
+                  placeholder="Message"
                   value={this.state.message}
-                  onChange={this.handleInputChange}></textarea>
+                  onChange={this.handleInputChange}
+                />
               </div>
             </div>
           </div>
-
         </div>
       </div>
     );

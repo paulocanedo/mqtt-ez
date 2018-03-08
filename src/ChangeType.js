@@ -1,5 +1,4 @@
 class ChangeType {
-
   static get INSERT() {
     return 0;
   }
@@ -11,7 +10,6 @@ class ChangeType {
   static get DELETE() {
     return 2;
   }
-
 }
 
 export default ChangeType;

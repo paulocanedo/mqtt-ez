@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import Main from './view/Main'
-import Footer from './view/Footer'
+import Main from "./view/Main";
+import Footer from "./view/Footer";
 
 class App extends React.Component {
   render() {
