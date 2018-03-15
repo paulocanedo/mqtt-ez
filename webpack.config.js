@@ -6,11 +6,28 @@ const path = require('path');
 
 const config = {
   entry: {
-    main: './src/index.js',
+    mqtt_ez: './src/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'mqtt-ez.bundle.js'
+    filename: '[name].bundle.js'
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        mqtt_ez: {
+          chunks: "all",
+          minChunks: 2
+        },
+        vendor: {
+          test: /node_modules/,
+          chunks: "all",
+          name: "vendor",
+          priority: 10,
+          enforce: true
+        }
+      }
+    }
   },
   module: {
     rules: [
@@ -43,8 +60,7 @@ const config = {
     new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
-          filename: "[name].css",
-          chunkFilename: "[id].css"
+          filename: "[name].bundle.css"
         }),
     new webpack.LoaderOptionsPlugin({minimize: false})
   ]
