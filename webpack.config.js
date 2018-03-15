@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+
 const webpack = require('webpack');
 
 const path = require('path');
@@ -56,13 +58,17 @@ const config = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({template: './public/index.html'}),
+    new HtmlWebpackPlugin({template: './src/index.html'}),
     new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
           filename: "[name].bundle.css"
         }),
-    new webpack.LoaderOptionsPlugin({minimize: false})
+
+    // to build firefox-addon
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, 'firefox-addon')
+    }])
   ]
 };
 

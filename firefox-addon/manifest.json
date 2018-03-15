@@ -1,0 +1,20 @@
+{
+
+  "description": "MQTT-EZ is a MQTT front end client",
+  "manifest_version": 2,
+  "name": "MQTT-EZ",
+  "version": "1.0",
+  "homepage_url": "https://github.com/paulocanedo/mqtt-ez",
+  "icons": {
+    "48": "icons/mqtt-ez-48.png"
+  },
+  "browser_action": {
+    "default_icon": "icons/mqtt-ez-32.png"
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  }
+
+
+}
