@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import App from "./App";
+import "./FontAwesomeLoader";
+import 'bulma/css/bulma.css';
 
-import "./index.css";
+import App from "./App";
+import './index.css';
+
 // import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(<App />, document.getElementById("root"));
