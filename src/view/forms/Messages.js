@@ -12,6 +12,8 @@ class Messages extends React.Component {
     const qos = props.message.qos;
     const retained = props.message.retain ? "YES" : "NO";
 
+    console.log(props.message.retain);
+
     return (
       <tr style={{ borderLeft: "solid " + color + " 5px" }}>
         <td>{timestamp}</td>

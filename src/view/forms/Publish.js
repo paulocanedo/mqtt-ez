@@ -1,8 +1,6 @@
 import React from "react";
 import ConnectionState from "../../ConnectionState";
 
-const mqtt_adapter = require("../../controller/mqtt_adapter");
-
 class Publish extends React.Component {
   constructor(props) {
     super(props);
@@ -32,11 +30,11 @@ class Publish extends React.Component {
     evt.preventDefault();
 
     const topic = this.state.topic;
-    const qos = this.state.qos;
-    const retain = this.state.retain;
+    const qos = parseInt(this.state.qos, 10);
+    const retain = this.state.retain === "true";
     const message = this.state.message;
 
-    mqtt_adapter.publish(topic, qos, retain, message, () => {
+    this.props.mqtt.publish(topic, qos, retain, message, () => {
       this.setState({
         topic: "",
         message: ""

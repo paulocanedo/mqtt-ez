@@ -1,6 +1,6 @@
 {
   "name": "mqtt-ez",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "mqqt-ez",
   "main": "index.js",
   "scripts": {

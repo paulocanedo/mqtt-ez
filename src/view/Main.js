@@ -94,6 +94,7 @@ class Main extends React.Component {
             </div>
             <div className="column">
               <Card
+                mqtt={this.props.mqtt}
                 currentFeature={this.state.currentFeature}
                 connectionState={this.state.connectionState}
                 subscriptions={this.state.subscriptions}

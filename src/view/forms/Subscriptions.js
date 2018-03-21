@@ -3,7 +3,6 @@ import ColorProvider from "../../controller/ColorProvider";
 import ConnectionState from "../../ConnectionState";
 import ChangeType from "../../ChangeType";
 
-const mqtt_adapter = require("../../controller/mqtt_adapter");
 const hash = require("object-hash");
 
 class Subscriptions extends React.Component {
@@ -39,8 +38,9 @@ class Subscriptions extends React.Component {
     evt.preventDefault();
 
     const topic = this.state.topic;
-    const qos = this.state.qos;
-    mqtt_adapter.subscribe(topic, qos, (err, granted) => {
+    const qos = parseInt(this.state.qos, 10);
+
+    this.props.mqtt.subscribe(topic, qos, (err, granted) => {
       if (err) {
         alert(err);
         return;

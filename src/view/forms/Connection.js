@@ -2,17 +2,11 @@ import React, { Component } from "react";
 
 import ConnectionState from "../../ConnectionState";
 
-const mqtt_adapter = require("../../controller/mqtt_adapter");
-
 class Connection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clientId:
-        "mqtt-ez_" +
-        Math.random()
-          .toString(16)
-          .substr(2, 8),
+      clientId: this.props.mqtt.clientId,
       host: "iot.eclipse.org/ws",
       protocol: "ws",
       port: 443,
@@ -28,7 +22,7 @@ class Connection extends Component {
   doConnect() {
     this.props.onConnectionChange(ConnectionState.CONNECTING);
 
-    mqtt_adapter.connect({
+    this.props.mqtt.connect({
       keepalive: this.state.keepAlive,
       clientId: this.state.clientId,
       host: this.state.host,
@@ -53,11 +47,11 @@ class Connection extends Component {
       // resubscribe : if connection is broken and reconnects, subscribed topics are automatically subscribed again (default true)
     });
 
-    mqtt_adapter.on("connect", connack => {
+    this.props.mqtt.on("connect", connack => {
       this.props.onConnectionChange(ConnectionState.CONNECTED);
     });
 
-    mqtt_adapter.on("message", (topic, content, packet) => {
+    this.props.mqtt.on("message", (topic, content, packet) => {
       const message = {
         topic: topic,
         timestamp: new Date(),
@@ -70,8 +64,8 @@ class Connection extends Component {
   }
 
   doDisconnect() {
-    mqtt_adapter.end();
-    mqtt_adapter.on("close", connack => {
+    this.props.mqtt.end();
+    this.props.mqtt.on("close", connack => {
       this.props.onConnectionChange(ConnectionState.DISCONNECTED);
     });
   }

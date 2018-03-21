@@ -1,3 +1,9 @@
 {
-	"cmd": "npm run build"
+	"cmd": "npm run build",
+	"name": "default",
+	"targets": {
+		"firefox-addon": {
+			"cmd": "echo not implemented yet"
+		}
+	}
 }

@@ -33,6 +33,7 @@ class FormBuilder {
             connectionState={props.connectionState}
             onNewMessage={props.onNewMessage}
             onConnectionChange={props.onConnectionChange}
+            mqtt={props.mqtt}
           />
         );
       }
@@ -42,6 +43,7 @@ class FormBuilder {
             connectionState={props.connectionState}
             subscriptions={props.subscriptions}
             onSubscriptionChange={props.onSubscriptionChange}
+            mqtt={props.mqtt}
           />
         );
       }
@@ -50,11 +52,14 @@ class FormBuilder {
           <Messages
             connectionState={props.connectionState}
             messages={props.messages}
+            mqtt={props.mqtt}
           />
         );
       }
       case 3: {
-        return <Publish connectionState={props.connectionState} />;
+        return (
+          <Publish connectionState={props.connectionState} mqtt={props.mqtt} />
+        );
       }
       default: {
         throw Error("unexpected feature id");
