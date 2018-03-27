@@ -1,4 +1,5 @@
 const mqtt = require("mqtt");
+
 let client = null;
 
 class MqttAdapter {
@@ -29,7 +30,7 @@ class MqttAdapter {
       // 'protocolId': params.protocol,
       // 'protocolVersion': 4,
       clean: params.cleanSession,
-      reconnectPeriod: 1000, //milis
+      reconnectPeriod: 0, //milis
       connectTimeout: 3 * 1000,
       username: params.username,
       password: params.password
@@ -46,7 +47,11 @@ class MqttAdapter {
     });
   }
 
-  end() {
+  isConnected() {
+    return client.connected;
+  }
+
+  disconnect() {
     //verify if is connected
     client.end();
   }

@@ -7,22 +7,24 @@ class Connection extends Component {
     super(props);
     this.state = {
       clientId: this.props.mqtt.clientId,
-      host: "iot.eclipse.org/ws",
+      host: this.getParamFromStorage('host') || 'iot.eclipse.org',
       protocol: "ws",
-      port: 443,
-      keepAlive: 60,
-      ssl: true,
-      cleanSession: true
+      port: this.getParamFromStorage('port') || 443,
+      keepAlive: this.getParamFromStorage('keepAlive') || 60,
+      ssl: this.getParamFromStorage('ssl') || true,
+      cleanSession: this.getParamFromStorage('cleanSession') || true
     };
 
     this.handleConnectionClick = this.handleConnectionClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  doConnect() {
-    this.props.onConnectionChange(ConnectionState.CONNECTING);
+  getParamFromStorage(param) {
+    return window.localStorage.getItem('connection_' + param);
+  }
 
-    this.props.mqtt.connect({
+  getParams() {
+    return {
       keepalive: this.state.keepAlive,
       clientId: this.state.clientId,
       host: this.state.host,
@@ -45,26 +47,40 @@ class Connection extends Component {
       //     retain: the retain flag
       // transformWsUrl : optional (url, options, client) => url function For ws/wss protocols only. Can be used to implement signing urls which upon reconnect can have become expired.
       // resubscribe : if connection is broken and reconnects, subscribed topics are automatically subscribed again (default true)
-    });
+    };
+  }
+
+  doConnect() {
+    this.props.onConnectionChange(ConnectionState.CONNECTING);
+
+    const params = this.getParams();
+    this.props.mqtt.connect(params);
+
+    let timeout = 30000;
+    setTimeout(() => {
+      if(!this.props.mqtt.isConnected()) {
+        this.props.onConnectionChange(ConnectionState.DISCONNECTED);
+        this.props.mqtt.disconnect();
+      }
+    }, timeout + 1000);
 
     this.props.mqtt.on("connect", connack => {
       this.props.onConnectionChange(ConnectionState.CONNECTED);
     });
 
     this.props.mqtt.on("message", (topic, content, packet) => {
-      const message = {
+      this.props.onNewMessage({
         topic: topic,
         timestamp: new Date(),
         content: content.toString(),
         qos: packet.qos,
         retain: packet.retain
-      };
-      this.props.onNewMessage(message);
+      });
     });
   }
 
   doDisconnect() {
-    this.props.mqtt.end();
+    this.props.mqtt.disconnect();
     this.props.mqtt.on("close", connack => {
       this.props.onConnectionChange(ConnectionState.DISCONNECTED);
     });
@@ -96,6 +112,7 @@ class Connection extends Component {
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
+    window.localStorage.setItem(`connection_${name}`, value);
     this.setState({ [name]: value });
   }
 
@@ -127,20 +144,22 @@ class Connection extends Component {
                     onChange={this.handleInputChange}
                   />
                 </div>
-                <div className="tile is-child box is-shadowless is-2">
-                  <label className="label">Protocol</label>
-                  <div className="select is-fullwidth">
-                    <select
-                      name="protocol"
-                      value={this.state.protocol}
-                      disabled="true"
-                      onChange={this.handleInputChange}
-                    >
-                      <option value="mqtt">MQTT</option>
-                      <option value="ws">Web Socket</option>
-                    </select>
-                  </div>
-                </div>
+                {
+                  // <div className="tile is-child box is-shadowless is-2">
+                  //   <label className="label">Protocol</label>
+                  //   <div className="select is-fullwidth">
+                  //     <select
+                  //       name="protocol"
+                  //       value={this.state.protocol}
+                  //       disabled="true"
+                  //       onChange={this.handleInputChange}
+                  //     >
+                  //       <option value="mqtt">MQTT</option>
+                  //       <option value="ws">Web Socket</option>
+                  //     </select>
+                  //   </div>
+                  // </div>
+                }
                 <div className="tile is-child box is-shadowless is-2">
                   <label className="label">Port</label>
                   <input
@@ -155,6 +174,7 @@ class Connection extends Component {
                   <label className="label">Client ID</label>
                   <input
                     className="input"
+                    name="client_id"
                     type="text"
                     value={this.state.clientId}
                     onChange={this.handleInputChange}
