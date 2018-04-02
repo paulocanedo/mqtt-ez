@@ -52,6 +52,7 @@ class FormBuilder {
           <Messages
             connectionState={props.connectionState}
             messages={props.messages}
+            clearMessages={props.clearMessages}
             mqtt={props.mqtt}
           />
         );

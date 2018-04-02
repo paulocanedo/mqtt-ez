@@ -3,6 +3,11 @@ import React from "react";
 const hash = require("object-hash");
 
 class Messages extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClearMessagesClick = this.handleClearMessagesClick.bind(this);
+  }
+
   MessageRow(props) {
     // const id = props.sub.key;
     const color = props.message.color;
@@ -11,8 +16,6 @@ class Messages extends React.Component {
     const message = props.message.content;
     const qos = props.message.qos;
     const retained = props.message.retain ? "YES" : "NO";
-
-    console.log(props.message.retain);
 
     return (
       <tr style={{ borderLeft: "solid " + color + " 5px" }}>
@@ -23,6 +26,10 @@ class Messages extends React.Component {
         <td className="has-text-right">{retained}</td>
       </tr>
     );
+  }
+
+  handleClearMessagesClick(evt) {
+    this.props.clearMessages();
   }
 
   render() {
@@ -36,6 +43,15 @@ class Messages extends React.Component {
 
     return (
       <div className="card-content">
+        <div className="is-centered">
+          <button
+            className="button"
+            disabled={messages.length === 0}
+            onClick={this.handleClearMessagesClick}
+          >
+            Clear Messages
+          </button>
+        </div>
         <table className="table is-hoverable is-fullwidth">
           <thead>
             <tr>

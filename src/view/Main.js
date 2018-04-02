@@ -23,6 +23,14 @@ class Main extends React.Component {
     this.handleConnectionChange = this.handleConnectionChange.bind(this);
     this.handleNewMessage = this.handleNewMessage.bind(this);
     this.handleSubscriptionChange = this.handleSubscriptionChange.bind(this);
+    this.clearMessages = this.clearMessages.bind(this);
+  }
+
+  clearMessages() {
+    this.setState({
+      messages: [],
+      unreadedMessages: 0
+    });
   }
 
   handleNewMessage(message) {
@@ -103,6 +111,7 @@ class Main extends React.Component {
                 onSubscriptionChange={this.handleSubscriptionChange}
                 onNewMessage={this.handleNewMessage}
                 onFeatureChange={this.handleFeatureChange}
+                clearMessages={this.clearMessages}
               />
             </div>
           </div>

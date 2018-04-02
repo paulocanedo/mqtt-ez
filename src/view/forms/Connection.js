@@ -7,12 +7,12 @@ class Connection extends Component {
     super(props);
     this.state = {
       clientId: this.props.mqtt.clientId,
-      host: this.getParamFromStorage('host') || 'iot.eclipse.org',
+      host: this.getParamFromStorage("host") || "iot.eclipse.org/ws",
       protocol: "ws",
-      port: this.getParamFromStorage('port') || 443,
-      keepAlive: this.getParamFromStorage('keepAlive') || 60,
-      ssl: this.getParamFromStorage('ssl') || true,
-      cleanSession: this.getParamFromStorage('cleanSession') || true
+      port: this.getParamFromStorage("port") || 443,
+      keepAlive: this.getParamFromStorage("keepAlive") || 60,
+      ssl: this.getParamFromStorage("ssl") || true,
+      cleanSession: this.getParamFromStorage("cleanSession") || true
     };
 
     this.handleConnectionClick = this.handleConnectionClick.bind(this);
@@ -20,7 +20,7 @@ class Connection extends Component {
   }
 
   getParamFromStorage(param) {
-    return window.localStorage.getItem('connection_' + param);
+    return window.localStorage.getItem("connection_" + param);
   }
 
   getParams() {
@@ -58,7 +58,7 @@ class Connection extends Component {
 
     let timeout = 30000;
     setTimeout(() => {
-      if(!this.props.mqtt.isConnected()) {
+      if (!this.props.mqtt.isConnected()) {
         this.props.onConnectionChange(ConnectionState.DISCONNECTED);
         this.props.mqtt.disconnect();
       }
