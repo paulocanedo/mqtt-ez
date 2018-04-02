@@ -1,6 +1,9 @@
 # MQTT-EZ
 A simple tool for mqtt management, you can use as firefox-addon or deploy anywhere
 
+## Download Firefox addon
+https://addons.mozilla.org/en-US/firefox/addon/mqtt-ez/
+
 ## build from source
 ```bash
 git clone https://github.com/paulocanedo/mqtt-ez.git
